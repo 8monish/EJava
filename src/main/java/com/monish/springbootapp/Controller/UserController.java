@@ -8,11 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.monish.springbootapp.User;
+import com.monish.springbootapp.repository.UserRepository;
 
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @GetMapping("/{userId}")
     public User getById(@PathVariable String userId) {
         return new User(userId, "Monish", "jade", "monish.jade@example.com");
@@ -20,10 +27,6 @@ public class UserController {
 
     @GetMapping("/all")
     public List<User> getAll() {
-        List<User> users = List.of(
-            new User("1", "Monish", "jade", "monish.jade@example.com"),
-            new User("2", "John", "Doe", "john.doe@example.com")
-        );
-        return users;
+        return this.userRepository.findAll();
     }
 }
