@@ -1,4 +1,4 @@
-package com.monish.springbootapp;
+package com.monish.springbootapp.Controller;
 
 
 import org.springframework.web.bind.annotation.DeleteMapping;
