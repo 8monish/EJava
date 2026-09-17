@@ -1,9 +1,23 @@
 package com.monish.springbootapp;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity 
+@Table(name="users")
+
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false,unique = true)
     private String email;
 
     public User(String id, String firstName, String lastName, String email) {
