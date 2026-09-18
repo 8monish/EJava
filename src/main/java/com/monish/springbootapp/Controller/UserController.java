@@ -43,7 +43,10 @@ public class UserController {
 
     @GetMapping("/us/{userString}")
     public User getMethodName(@PathVariable String userString) {
-        return this.userRepository.findById(userString).orElseThrow();
+        if (userString == null || userString.isEmpty()) {
+            return new User(userString, null, null , null);
+        }   
+        return this.userRepository.findById(userString).orElse(new User(userString, null, null , null));
     }
     
 
