@@ -42,7 +42,6 @@ public class UserController {
 
     @PutMapping("/update/{userId}")
     public User update(@PathVariable String userId, @RequestBody User entity) {
-        entity.setUserId(userId);
         return this.userRepository.save(entity);
     }
 
