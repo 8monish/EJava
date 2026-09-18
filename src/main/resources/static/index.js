@@ -1,6 +1,10 @@
-const primaryHeader = document.getElementById("primary-header");
-primaryHeader.addEventListener("click", () => {
-    primaryHeader.style.color = "green";
-    primaryHeader.style.fontSize = "100px";
-});
-primaryHeader.textContent = "Welcome to Spring Boot App";   
+async function fetchUsers() {
+    const users = fetch('/api/users/all');
+    const data = await users.then(response => response.json());
+    alert(JSON.stringify(data, null, 2));
+}
+async function main () {
+    console.log('executed main function');
+    await fetchUsers();
+}
+main();
