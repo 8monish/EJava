@@ -1,32 +1,963 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="index.css">
-	<script src="index.js" defer></script>
-	<title>Spring Boot App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID — Municipal Smart Light Pole, EV Charging & Camera Network</title>
+  <meta name="description" content="Municipal smart city platform managing LED streetlight poles retrofitted with EV chargers and surveillance cameras, billing EV drivers, and tracking streetlight infrastructure budgets.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <script src="index.js" defer></script>
 </head>
 <body>
-	<header id="primary-header">
-		<h1>Welcome</h1>
-	</header>
-	<table>
-		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Email</th>
-			<th>Actions</th>
-		</tr>
-		<tbody id="user-table-body">
-			<!-- User data will be populated here -->
-		</tbody>
-	</table>
-	<main>
-		<p class="blue-color">Hello World!</p>
-	</main>
-	<footer>
-		<p>Spring Boot App</p>
-	</footer>
+  <!-- Header / Navigation Bar -->
+  <header id="primary-header" class="site-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-symbol">
+          <div class="pulse-ring"></div>
+          <span class="symbol-icon">⚡</span>
+        </div>
+        <div class="brand-meta">
+          <h1 class="brand-title">AURA<span>GRID</span></h1>
+          <p class="brand-tagline">Municipal Smart Pole EV & Surveillance Network</p>
+        </div>
+      </div>
+
+      <!-- Live IoT Status & Ambient Tracker Bar -->
+      <div class="header-telemetry">
+        <div class="telemetry-pill">
+          <span class="telemetry-dot dot-live"></span>
+          <span class="telemetry-label">Grid Telemetry:</span>
+          <span id="telemetry-active-count" class="telemetry-value">5 Poles Online</span>
+        </div>
+        <div class="telemetry-pill">
+          <span class="lux-icon">☀️</span>
+          <span class="telemetry-label">Ambient Solar:</span>
+          <span id="telemetry-lux" class="telemetry-value text-amber">18.5 Lux</span>
+        </div>
+        <div class="telemetry-pill">
+          <span class="telemetry-label">Role Profile:</span>
+          <div class="role-selector-wrap">
+            <select id="active-actor-select" class="actor-dropdown" aria-label="Select Active Municipal Role">
+              <option value="admin">🛡️ Admin (Smart Lighting Manager)</option>
+              <option value="accountant">💼 Invoicing User (Municipal Accountant)</option>
+              <option value="system">🤖 System (IoT & Ledger Autonomous Engine)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="header-actions">
+        <button id="btn-run-usecase" class="btn-gradient-glow" title="Execute the 4 Key Use-Case Steps sequentially">
+          <span class="btn-sparkle">✨</span> Run 4-Step Key Use-Case
+        </button>
+        <button id="btn-refresh-all" class="btn-glass" title="Refresh all data">
+          <span>🔄</span> Sync
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs-bar" aria-label="Main Navigation">
+      <div class="tabs-container">
+        <button id="tab-btn-poles" class="nav-tab active" data-tab="tab-poles">
+          <span class="tab-icon">🏙️</span> Smart Grid & Poles
+        </button>
+        <button id="tab-btn-charging" class="nav-tab" data-tab="tab-charging">
+          <span class="tab-icon">🔋</span> EV Charging Sessions
+        </button>
+        <button id="tab-btn-transactions" class="nav-tab" data-tab="tab-transactions">
+          <span class="tab-icon">💼</span> Invoicing & Transactions
+        </button>
+        <button id="tab-btn-master" class="nav-tab" data-tab="tab-master">
+          <span class="tab-icon">📑</span> Master Data & CoA
+        </button>
+        <button id="tab-btn-budget" class="nav-tab" data-tab="tab-budget">
+          <span class="tab-icon">📊</span> Budget & Analytic Sectors
+        </button>
+        <button id="tab-btn-reports" class="nav-tab" data-tab="tab-reports">
+          <span class="tab-icon">📈</span> Municipal Financial Reports
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="app-main-content">
+    
+    <!-- Top KPI Overview Banner -->
+    <section class="kpi-banner">
+      <div class="kpi-card kpi-cyan">
+        <div class="kpi-icon-wrap">⚡</div>
+        <div class="kpi-body">
+          <div class="kpi-header">
+            <span class="kpi-title">Active EV Charging</span>
+            <span class="kpi-badge badge-cyan" id="kpi-active-sessions">1 Active</span>
+          </div>
+          <div class="kpi-metric" id="kpi-kwh-dispensed">124.8 <span class="kpi-unit">kWh</span></div>
+          <div class="kpi-subtext" id="kpi-ev-revenue">$43.68 generated today</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-icon-wrap">💡</div>
+        <div class="kpi-body">
+          <div class="kpi-header">
+            <span class="kpi-title">LED Grid Dimming</span>
+            <span class="kpi-badge badge-amber" id="kpi-dimming-mode">Auto-Adaptive</span>
+          </div>
+          <div class="kpi-metric" id="kpi-avg-brightness">82<span class="kpi-unit">% Output</span></div>
+          <div class="kpi-subtext" id="kpi-lux-subtext">Ambient: 18.5 Lux (Night Profile)</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-icon-wrap">📹</div>
+        <div class="kpi-body">
+          <div class="kpi-header">
+            <span class="kpi-title">Surveillance Cameras</span>
+            <span class="kpi-badge badge-purple" id="kpi-cameras-status">5 / 5 Online</span>
+          </div>
+          <div class="kpi-metric">4K LPR <span class="kpi-unit">Active</span></div>
+          <div class="kpi-subtext">Security & Traffic telemetry streaming</div>
+        </div>
+      </div>
+
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon-wrap">🏛️</div>
+        <div class="kpi-body">
+          <div class="kpi-header">
+            <span class="kpi-title">Municipal Operating Surplus</span>
+            <span class="kpi-badge badge-green">P&L Margin +48.2%</span>
+          </div>
+          <div class="kpi-metric" id="kpi-net-surplus">+$40,400.00</div>
+          <div class="kpi-subtext">Balanced double-entry general ledger</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: SMART GRID & POLES -->
+    <section id="tab-poles" class="dashboard-tab-panel active">
+      <!-- Hero Banner & Interactive Ambient Simulator -->
+      <div class="grid-controls-card">
+        <div class="hero-left">
+          <div class="hero-image-frame">
+            <img src="images/smart_pole_hero.jpg" alt="Municipal Smart LED Light Pole with EV Charger and Surveillance Camera" class="hero-thumbnail">
+            <div class="hero-image-overlay">
+              <span class="overlay-tag">Retrofit Standard V3</span>
+            </div>
+          </div>
+          <div class="hero-text">
+            <h2>Municipal Smart Public Light Pole Network</h2>
+            <p>Retrofitted dual-purpose street poles integrating high-efficiency LED luminaires, Level-2 & DC EV fast chargers, and 360° 4K surveillance cameras across municipal sectors.</p>
+            <div class="hero-quick-stats">
+              <span class="tag-pill">🏙️ Downtown Zone 1</span>
+              <span class="tag-pill">⚡ 22kW & 50kW Dual Sockets</span>
+              <span class="tag-pill">📹 AI License Plate Recognition</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ambient Light & Auto-Dimming Simulator -->
+        <div class="ambient-simulator-box">
+          <div class="sim-header">
+            <h3><span class="icon">☀️</span> System IoT Ambient Sensor & Auto-Dimmer</h3>
+            <span class="badge-status badge-live">Live Sensor</span>
+          </div>
+          <p class="sim-desc">The System automatically monitors ambient lux and auto-adjusts LED brightness to optimize safety and conserve energy.</p>
+          <div class="lux-slider-row">
+            <div class="lux-label-col">
+              <span class="lux-title">Ambient Lux Level</span>
+              <span id="current-lux-display" class="lux-number">25 Lux</span>
+            </div>
+            <input type="range" id="ambient-lux-slider" min="0" max="800" value="25" class="slider-styled" aria-label="Ambient Lux Slider">
+          </div>
+          <div class="lux-presets-row">
+            <button class="btn-preset" data-lux="10">🌑 Midnight (10 Lux)</button>
+            <button class="btn-preset active" data-lux="40">🌆 Dusk (40 Lux)</button>
+            <button class="btn-preset" data-lux="250">☁️ Overcast (250 Lux)</button>
+            <button class="btn-preset" data-lux="700">☀️ Bright Day (700 Lux)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Poles Section Header -->
+      <div class="section-subbar">
+        <div class="section-title-wrap">
+          <h3>Retrofitted Smart Light Pole Units</h3>
+          <span id="pole-count-tag" class="count-tag">5 units deployed</span>
+        </div>
+        <div class="section-action-btns">
+          <button id="btn-open-add-pole-modal" class="btn-primary">
+            <span>➕</span> Add Smart Pole Unit
+          </button>
+        </div>
+      </div>
+
+      <!-- Smart Poles Grid Cards Container -->
+      <div id="smart-poles-grid" class="poles-card-grid">
+        <!-- Dynamically populated via index.js -->
+        <div class="card-loading">Loading smart poles telemetry...</div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CHARGING SESSIONS & INVOICING -->
+    <section id="tab-charging" class="dashboard-tab-panel">
+      <div class="section-subbar">
+        <div class="section-title-wrap">
+          <h3>Active & Completed EV Charging Sessions</h3>
+          <p class="section-desc">Track real-time kilowatt-hour delivery, compute automated tariffs, and issue customer invoices to commercial parking operators and fleet drivers.</p>
+        </div>
+        <div class="section-action-btns">
+          <button id="btn-quick-start-charge" class="btn-primary">
+            <span>⚡</span> Start New EV Charge Session
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container-card">
+        <table class="data-table" id="table-charging-sessions">
+          <thead>
+            <tr>
+              <th>Session ID</th>
+              <th>Pole Unit</th>
+              <th>Driver / Fleet Operator</th>
+              <th>Start Time</th>
+              <th>Duration</th>
+              <th>kWh Delivered</th>
+              <th>Tariff Rate</th>
+              <th>Total Charges</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="charging-sessions-tbody">
+            <!-- Populated via index.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 3: INVOICING & TRANSACTION FLOW -->
+    <section id="tab-transactions" class="dashboard-tab-panel">
+      <!-- Transaction Flow Architecture Banner -->
+      <div class="workflow-visual-card">
+        <div class="flow-header">
+          <h3>Municipal Smart City Transaction & Invoicing Flow</h3>
+          <p>Seamless execution from Procurement to Payment, and Fleet EV Charging Orders to Bank Receipts.</p>
+        </div>
+        <div class="flow-steps-diagram">
+          <div class="flow-chain">
+            <span class="flow-chain-title">Procurement Flow (LED Replacements)</span>
+            <div class="flow-step-boxes">
+              <div class="flow-box">1. Purchase Order (PO)</div>
+              <div class="flow-arrow">➔</div>
+              <div class="flow-box">2. Vendor Bill (AP)</div>
+              <div class="flow-arrow">➔</div>
+              <div class="flow-box">3. Bank Payment (Disbursement)</div>
+            </div>
+          </div>
+          <div class="flow-divider-vertical"></div>
+          <div class="flow-chain">
+            <span class="flow-chain-title">Revenue & Invoicing Flow (Fleet & EV Drivers)</span>
+            <div class="flow-step-boxes">
+              <div class="flow-box">1. Charging Session / SO</div>
+              <div class="flow-arrow">➔</div>
+              <div class="flow-box">2. Customer Invoice (AR)</div>
+              <div class="flow-arrow">➔</div>
+              <div class="flow-box">3. Bank Receipt (Collection)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Procurement Section: Purchase Orders & Vendor Bills -->
+      <div class="transactions-split-grid">
+        <!-- Purchase Orders -->
+        <div class="trans-card">
+          <div class="trans-header">
+            <h4><span>📦</span> Purchase Orders (LED Fixtures)</h4>
+            <button id="btn-new-po" class="btn-xs-primary">New PO</button>
+          </div>
+          <div class="table-mini-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PO #</th>
+                  <th>Vendor</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="po-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Vendor Bills -->
+        <div class="trans-card">
+          <div class="trans-header">
+            <h4><span>🧾</span> Vendor Bills (Accounts Payable)</h4>
+            <span class="badge-status badge-live">Payables Ledger</span>
+          </div>
+          <div class="table-mini-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Bill #</th>
+                  <th>Vendor</th>
+                  <th>Due Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="vendor-bills-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sales Section: Sales Orders & Customer Invoices -->
+      <div class="transactions-split-grid">
+        <!-- Sales Orders -->
+        <div class="trans-card">
+          <div class="trans-header">
+            <h4><span>📑</span> Sales Orders (Fleet Usage Quotas)</h4>
+            <button id="btn-new-so" class="btn-xs-primary">New SO</button>
+          </div>
+          <div class="table-mini-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SO #</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="so-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Customer Invoices -->
+        <div class="trans-card">
+          <div class="trans-header">
+            <h4><span>💳</span> Customer Invoices (Accounts Receivable)</h4>
+            <span class="badge-status badge-live">Receivables Ledger</span>
+          </div>
+          <div class="table-mini-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Invoice #</th>
+                  <th>Customer</th>
+                  <th>Due Date</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="customer-invoices-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- General Ledger / Journal Entries -->
+      <div class="trans-card full-width">
+        <div class="trans-header">
+          <h4><span>⚖️</span> System-Generated Double-Entry Journal Entries</h4>
+          <span class="badge-status badge-live">Debits = Credits Balanced</span>
+        </div>
+        <div class="table-container-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Entry #</th>
+                <th>Journal</th>
+                <th>Date</th>
+                <th>Reference</th>
+                <th>Description</th>
+                <th>Total Debit</th>
+                <th>Total Credit</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="journal-entries-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: MASTER DATA & COA -->
+    <section id="tab-master" class="dashboard-tab-panel">
+      <!-- Master Data Sub-tabs -->
+      <div class="master-subnav">
+        <button class="master-subtab-btn active" data-sub="sub-contacts">Contact Master (Customers & Vendors)</button>
+        <button class="master-subtab-btn" data-sub="sub-products">Product Master (Services & Goods)</button>
+        <button class="master-subtab-btn" data-sub="sub-coa">Chart of Accounts Master (CoA)</button>
+        <button class="master-subtab-btn" data-sub="sub-journals">Journal Types</button>
+      </div>
+
+      <!-- Subtab: Contacts -->
+      <div id="sub-contacts" class="master-subpanel active">
+        <div class="section-subbar">
+          <div class="section-title-wrap">
+            <h4>Contact Master</h4>
+            <p class="section-desc">Commercial Parking Operators (Customers), LED Module Vendors (Vendors), and Power Utilities (Vendors).</p>
+          </div>
+          <button id="btn-add-contact-modal" class="btn-primary"><span>➕</span> Add Contact</button>
+        </div>
+        <div class="table-container-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Role Category</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Outstanding Balance</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subtab: Products -->
+      <div id="sub-products" class="master-subpanel">
+        <div class="section-subbar">
+          <div class="section-title-wrap">
+            <h4>Product Master</h4>
+            <p class="section-desc">Streetlight EV Charging kWh (Service), Smart Pole Advertising Space (Service), and LED Fixtures (Goods).</p>
+          </div>
+          <button id="btn-add-product-modal" class="btn-primary"><span>➕</span> Add Product</button>
+        </div>
+        <div class="table-container-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Product / Service Name</th>
+                <th>Type</th>
+                <th>Unit Price</th>
+                <th>Unit of Measure</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subtab: CoA -->
+      <div id="sub-coa" class="master-subpanel">
+        <div class="section-subbar">
+          <div class="section-title-wrap">
+            <h4>Chart of Accounts (CoA) Master</h4>
+            <p class="section-desc">Assets, Liabilities, Income, and Expenses governing municipal smart lighting grid operations.</p>
+          </div>
+        </div>
+        <div class="coa-hierarchical-grid">
+          <!-- Assets Column -->
+          <div class="coa-category-card card-asset">
+            <h5><span>🏛️</span> Assets</h5>
+            <div id="coa-assets-list" class="coa-account-rows"></div>
+          </div>
+
+          <!-- Liabilities Column -->
+          <div class="coa-category-card card-liability">
+            <h5><span>💳</span> Liabilities</h5>
+            <div id="coa-liabilities-list" class="coa-account-rows"></div>
+          </div>
+
+          <!-- Income Column -->
+          <div class="coa-category-card card-income">
+            <h5><span>📈</span> Income (Revenue)</h5>
+            <div id="coa-income-list" class="coa-account-rows"></div>
+          </div>
+
+          <!-- Expenses Column -->
+          <div class="coa-category-card card-expense">
+            <h5><span>📉</span> Expenses</h5>
+            <div id="coa-expenses-list" class="coa-account-rows"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab: Journals -->
+      <div id="sub-journals" class="master-subpanel">
+        <div class="section-subbar">
+          <div class="section-title-wrap">
+            <h4>Journal Master</h4>
+            <p class="section-desc">Sales, Purchase, Cash, and Bank Journals configured for automated debits and credits.</p>
+          </div>
+        </div>
+        <div class="table-container-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Journal Name</th>
+                <th>Journal Type</th>
+                <th>Ledger Mapping</th>
+              </tr>
+            </thead>
+            <tbody id="journals-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: BUDGET FLOW & LIGHTING SECTORS -->
+    <section id="tab-budget" class="dashboard-tab-panel">
+      <div class="section-subbar">
+        <div class="section-title-wrap">
+          <h3>Smart Lighting Grid Budget & Sector Analytics</h3>
+          <p class="section-desc">Compares planned municipal grid operating budgets against actual wholesale electricity expenses and charging/advertising revenues.</p>
+        </div>
+        <div class="sector-filter-wrap">
+          <label for="budget-sector-select">Analytic Account (Lighting Sector):</label>
+          <select id="budget-sector-select" class="actor-dropdown">
+            <option value="1">Downtown Smart Pole Zone 1 (AN-DT-Z1)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Budget KPI Overview -->
+      <div class="budget-summary-banner">
+        <div class="budget-kpi-item">
+          <span class="budget-kpi-label">Planned Revenue</span>
+          <span id="budget-planned-rev" class="budget-kpi-val text-cyan">$110,000.00</span>
+        </div>
+        <div class="budget-kpi-item">
+          <span class="budget-kpi-label">Actual Revenue</span>
+          <span id="budget-actual-rev" class="budget-kpi-val text-green">$84,600.00</span>
+        </div>
+        <div class="budget-kpi-item">
+          <span class="budget-kpi-label">Planned Expense</span>
+          <span id="budget-planned-exp" class="budget-kpi-val text-amber">$55,000.00</span>
+        </div>
+        <div class="budget-kpi-item">
+          <span class="budget-kpi-label">Actual Expense</span>
+          <span id="budget-actual-exp" class="budget-kpi-val text-rose">$44,200.00</span>
+        </div>
+        <div class="budget-kpi-item">
+          <span class="budget-kpi-label">Net Operating Margin</span>
+          <span id="budget-net-margin" class="budget-kpi-val text-emerald">+$40,400.00</span>
+        </div>
+      </div>
+
+      <!-- Detailed Budget Lines Table -->
+      <div class="table-container-card">
+        <table class="data-table" id="table-budget-lines">
+          <thead>
+            <tr>
+              <th>Account Code</th>
+              <th>Account Name</th>
+              <th>Type</th>
+              <th>Planned Amount</th>
+              <th>Actual Amount</th>
+              <th>Variance ($)</th>
+              <th>Achievement / Utilization</th>
+            </tr>
+          </thead>
+          <tbody id="budget-lines-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 6: MUNICIPAL FINANCIAL REPORTS -->
+    <section id="tab-reports" class="dashboard-tab-panel">
+      <div class="reports-header-bar">
+        <div class="reports-nav-pills">
+          <button class="report-nav-btn active" data-report="report-balance-sheet">1. Balance Sheet</button>
+          <button class="report-nav-btn" data-report="report-pnl">2. Profit & Loss Account (P&L)</button>
+          <button class="report-nav-btn" data-report="report-budget">3. Budget Performance Report</button>
+        </div>
+        <button id="btn-print-report" class="btn-glass" onclick="window.print()">
+          <span>🖨️</span> Print / Export PDF
+        </button>
+      </div>
+
+      <!-- Report View 1: Balance Sheet -->
+      <div id="report-balance-sheet" class="report-document-card active">
+        <div class="doc-header">
+          <div class="doc-title-group">
+            <h3>MUNICIPALITY OF SMART CITY — SMART LIGHTING INFRASTRUCTURE</h3>
+            <h4>Consolidated Balance Sheet</h4>
+            <p id="bs-date-tag">As of September 2026 • Reporting Currency: USD ($)</p>
+          </div>
+          <div class="doc-badge-status" id="bs-balance-badge">
+            <span class="badge-status badge-live">Balanced: Assets = Liabilities + Equity</span>
+          </div>
+        </div>
+
+        <div class="bs-split-columns">
+          <!-- Assets Side -->
+          <div class="bs-col">
+            <h5 class="bs-col-title">ASSETS</h5>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th class="text-right">Balance ($)</th>
+                </tr>
+              </thead>
+              <tbody id="bs-assets-tbody"></tbody>
+              <tfoot>
+                <tr>
+                  <th>TOTAL ASSETS</th>
+                  <th class="text-right text-cyan" id="bs-total-assets">$0.00</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Liabilities & Equity Side -->
+          <div class="bs-col">
+            <h5 class="bs-col-title">LIABILITIES & MUNICIPAL EQUITY</h5>
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th class="text-right">Balance ($)</th>
+                </tr>
+              </thead>
+              <tbody id="bs-liabilities-tbody"></tbody>
+              <tfoot>
+                <tr class="equity-row">
+                  <th>Retained Municipal Operating Surplus</th>
+                  <th class="text-right text-emerald" id="bs-retained-surplus">$0.00</th>
+                </tr>
+                <tr class="total-row">
+                  <th>TOTAL LIABILITIES & EQUITY</th>
+                  <th class="text-right text-cyan" id="bs-total-liab-equity">$0.00</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report View 2: Profit & Loss Statement -->
+      <div id="report-pnl" class="report-document-card">
+        <div class="doc-header">
+          <div class="doc-title-group">
+            <h3>MUNICIPALITY OF SMART CITY — SMART LIGHTING INFRASTRUCTURE</h3>
+            <h4>Statement of Profit & Loss (Operating Performance)</h4>
+            <p>Fiscal Period 2026 • Streetlight EV Charging, Digital Ads & Grid Power</p>
+          </div>
+          <div class="doc-badge-status">
+            <span class="badge-status badge-live" id="pnl-margin-badge">Operating Margin: +48.2%</span>
+          </div>
+        </div>
+
+        <div class="pnl-section">
+          <h5 class="pnl-section-title text-green">1. REVENUE (INCOME)</h5>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th class="text-right">Amount ($)</th>
+              </tr>
+            </thead>
+            <tbody id="pnl-revenue-tbody"></tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL OPERATING REVENUE</th>
+                <th class="text-right text-green" id="pnl-total-revenue">$0.00</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="pnl-section">
+          <h5 class="pnl-section-title text-rose">2. OPERATING EXPENSES & MAINTENANCE</h5>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th class="text-right">Amount ($)</th>
+              </tr>
+            </thead>
+            <tbody id="pnl-expense-tbody"></tbody>
+            <tfoot>
+              <tr>
+                <th>TOTAL OPERATING EXPENSES</th>
+                <th class="text-right text-rose" id="pnl-total-expense">$0.00</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="pnl-summary-box">
+          <div class="summary-line">
+            <span>NET MUNICIPAL OPERATING SURPLUS / (DEFICIT):</span>
+            <span id="pnl-net-surplus" class="text-emerald text-xl">+$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report View 3: Budget Performance Report -->
+      <div id="report-budget" class="report-document-card">
+        <div class="doc-header">
+          <div class="doc-title-group">
+            <h3>MUNICIPALITY OF SMART CITY — SMART LIGHTING INFRASTRUCTURE</h3>
+            <h4>Smart Lighting Grid Budget Performance Report</h4>
+            <p id="budget-report-sector-tag">Analytic Sector: Downtown Smart Pole Zone 1 • Fiscal Year 2026</p>
+          </div>
+          <div class="doc-badge-status">
+            <span class="badge-status badge-live" id="budget-ratio-badge">Budget Achievement: 76.9%</span>
+          </div>
+        </div>
+
+        <div class="table-container-card">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Account Code</th>
+                <th>Account Name</th>
+                <th>Category</th>
+                <th class="text-right">Planned Budget ($)</th>
+                <th class="text-right">Actual Incurred ($)</th>
+                <th class="text-right">Variance ($)</th>
+                <th class="text-right">Achievement / Utilization</th>
+              </tr>
+            </thead>
+            <tbody id="budget-report-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- Modal 1: 4-Step Key Use-Case Flow Runner -->
+  <div id="modal-usecase-runner" class="modal-overlay">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">⚡</span>
+          <h3>Municipal 4-Step Key Use-Case Automation</h3>
+        </div>
+        <button class="modal-close" data-modal="modal-usecase-runner">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">Execute the four foundational system use-case steps as defined in the municipal specifications with live real-time API logs.</p>
+        
+        <div class="usecase-steps-list">
+          <!-- Step 1 -->
+          <div class="step-card" id="step-card-1">
+            <div class="step-number-bubble">1</div>
+            <div class="step-info">
+              <h4>Create Master Data</h4>
+              <p>Add smart pole unit via <code>POST /api/smartpoles/units</code>, register fleet clients, set up Chart of Accounts.</p>
+              <div class="step-status-indicator" id="step-1-status">Pending execution...</div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card" id="step-card-2">
+            <div class="step-number-bubble">2</div>
+            <div class="step-info">
+              <h4>Process Charging Session</h4>
+              <p>Start charging via <code>POST /api/smartpoles/charge/start</code>; end session and compute total kWh charges.</p>
+              <div class="step-status-indicator" id="step-2-status">Pending execution...</div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card" id="step-card-3">
+            <div class="step-number-bubble">3</div>
+            <div class="step-info">
+              <h4>Execute Invoicing & Bills</h4>
+              <p>Issue Customer Invoice to parking operator; process Vendor Bill for LED replacements and bank settlement.</p>
+              <div class="step-status-indicator" id="step-3-status">Pending execution...</div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card" id="step-card-4">
+            <div class="step-number-bubble">4</div>
+            <div class="step-info">
+              <h4>Generate Reports</h4>
+              <p>Run Smart Lighting P&L, Consolidated Balance Sheet, and Pole Grid Budget Performance Reports.</p>
+              <div class="step-status-indicator" id="step-4-status">Pending execution...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal / JSON Log Output -->
+        <div class="terminal-log-card">
+          <div class="terminal-header">
+            <span>💻 API Transaction Execution Console</span>
+            <span class="terminal-dot"></span>
+          </div>
+          <pre id="usecase-log-output" class="terminal-body">// Ready. Click "Execute All 4 Steps" below to start...</pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-glass" data-modal="modal-usecase-runner">Close</button>
+        <button id="btn-execute-usecase-flow" class="btn-gradient-glow">
+          <span>🚀</span> Execute All 4 Steps Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Smart Pole Unit -->
+  <div id="modal-add-pole" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">➕</span>
+          <h3>Register New Smart Pole Unit</h3>
+        </div>
+        <button class="modal-close" data-modal="modal-add-pole">&times;</button>
+      </div>
+      <form id="form-add-pole">
+        <div class="modal-body form-grid">
+          <div class="form-group">
+            <label for="pole-form-code">Pole Unit Code *</label>
+            <input type="text" id="pole-form-code" placeholder="e.g. POLE-DT-004" required>
+          </div>
+          <div class="form-group">
+            <label for="pole-form-name">Pole Name *</label>
+            <input type="text" id="pole-form-name" placeholder="e.g. Liberty Plaza Smart Pole" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="pole-form-location">Street Location *</label>
+            <input type="text" id="pole-form-location" placeholder="e.g. Broadway & 8th Avenue, Sector 1" required>
+          </div>
+          <div class="form-group">
+            <label for="pole-form-zone">Lighting Sector / Zone</label>
+            <select id="pole-form-zone">
+              <option value="Downtown Smart Pole Zone 1">Downtown Smart Pole Zone 1</option>
+              <option value="Midtown Business Corridor Zone 2">Midtown Business Corridor Zone 2</option>
+              <option value="Harbor Waterfront Zone 3">Harbor Waterfront Zone 3</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="pole-form-power">EV Charger Power (kW)</label>
+            <input type="number" id="pole-form-power" value="22.0" step="0.1" required>
+          </div>
+          <div class="form-group">
+            <label for="pole-form-tariff">EV Tariff ($ / kWh)</label>
+            <input type="number" id="pole-form-tariff" value="0.35" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label for="pole-form-brightness">Initial LED Brightness (%)</label>
+            <input type="number" id="pole-form-brightness" value="80" min="0" max="100" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-glass" data-modal="modal-add-pole">Cancel</button>
+          <button type="submit" class="btn-primary">Register Smart Pole</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Start EV Charging Session -->
+  <div id="modal-start-charge" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">⚡</span>
+          <h3>Initiate EV Charging Session</h3>
+        </div>
+        <button class="modal-close" data-modal="modal-start-charge">&times;</button>
+      </div>
+      <form id="form-start-charge">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label for="charge-form-pole">Select Available Smart Pole *</label>
+            <select id="charge-form-pole" required></select>
+          </div>
+          <div class="form-group full-width">
+            <label for="charge-form-customer">Billing Contact (Operator / Driver)</label>
+            <select id="charge-form-customer"></select>
+          </div>
+          <div class="form-group full-width">
+            <label for="charge-form-fleet">Vehicle / Fleet Identifier</label>
+            <input type="text" id="charge-form-fleet" placeholder="e.g. Metro Delivery Fleet Van #210">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-glass" data-modal="modal-start-charge">Cancel</button>
+          <button type="submit" class="btn-primary">Connect & Start Charging</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Stop EV Charging Session -->
+  <div id="modal-stop-charge" class="modal-overlay">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🛑</span>
+          <h3>Complete EV Charging Session & Generate Invoice</h3>
+        </div>
+        <button class="modal-close" data-modal="modal-stop-charge">&times;</button>
+      </div>
+      <form id="form-stop-charge">
+        <input type="hidden" id="stop-form-session-id">
+        <div class="modal-body">
+          <div class="session-summary-box">
+            <p id="stop-modal-pole-info" class="text-bold">Pole: POLE-DT-003</p>
+            <p id="stop-modal-fleet-info">Vehicle: Metro Fleet Delivery Van #304</p>
+            <p id="stop-modal-rate-info">Tariff: $0.35 / kWh</p>
+          </div>
+          <div class="form-group">
+            <label for="stop-form-kwh">Final Energy Delivered (kWh) *</label>
+            <input type="number" id="stop-form-kwh" value="22.5" step="0.1" required>
+          </div>
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="stop-form-autoinvoice" checked>
+              Auto-generate Customer Invoice & post double-entry General Ledger
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-glass" data-modal="modal-stop-charge">Cancel</button>
+          <button type="submit" class="btn-primary">Compute Charges & Bill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Center -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>Municipal Smart Public Light Pole EV Charging & Camera Network • Integrated Municipal Financial & IoT Platform</p>
+      <div class="footer-tags">
+        <span>Spring Boot 4.1.1</span>
+        <span>Java 26</span>
+        <span>Hibernate ORM 7</span>
+        <span>REST APIs</span>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
