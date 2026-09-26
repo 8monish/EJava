@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // CHART OF ACCOUNTS</title>
+  <meta name="description" content="Municipal smart lighting Chart of Accounts, assets, liabilities, income, and expenses.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link active">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>CHART OF ACCOUNTS (CoA) MASTER</h2>
+        <p>MUNICIPAL ASSET CLASSIFICATIONS // LIABILITIES // REVENUE STREAMS // OPERATING EXPENSES</p>
+      </div>
+      <div class="page-header-actions">
+        <span class="tag-badge filled" style="padding: 8px 14px;">[ 5-DIGIT ACCOUNT STRUCTURE ]</span>
+      </div>
+    </div>
+
+    <!-- 4 Account Categories Grid -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px;">
+
+      <!-- 1. Assets -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>1. ASSETS (10000 - 19999)</h3>
+          <span class="tag-badge">CAPITAL & LIQUID</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>CODE</th>
+                <th>ACCOUNT NAME</th>
+                <th class="text-right">CURRENT BALANCE</th>
+              </tr>
+            </thead>
+            <tbody id="coa-assets-tbody">
+              <tr><td colspan="3" class="text-center font-mono">LOADING ASSETS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. Liabilities -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>2. LIABILITIES (20000 - 29999)</h3>
+          <span class="tag-badge">PAYABLES & DEBT</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>CODE</th>
+                <th>ACCOUNT NAME</th>
+                <th class="text-right">CURRENT BALANCE</th>
+              </tr>
+            </thead>
+            <tbody id="coa-liabs-tbody">
+              <tr><td colspan="3" class="text-center font-mono">LOADING LIABILITIES...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. Income / Revenue -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>3. INCOME / REVENUE (40000 - 49999)</h3>
+          <span class="tag-badge">TARIFF INFLOW</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>CODE</th>
+                <th>ACCOUNT NAME</th>
+                <th class="text-right">CURRENT BALANCE</th>
+              </tr>
+            </thead>
+            <tbody id="coa-revs-tbody">
+              <tr><td colspan="3" class="text-center font-mono">LOADING INCOME...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. Expenses -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>4. OPERATING EXPENSES (50000 - 59999)</h3>
+          <span class="tag-badge">GRID POWER & MAINT</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>CODE</th>
+                <th>ACCOUNT NAME</th>
+                <th class="text-right">CURRENT BALANCE</th>
+              </tr>
+            </thead>
+            <tbody id="coa-exps-tbody">
+              <tr><td colspan="3" class="text-center font-mono">LOADING EXPENSES...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initCoaPage();
+    });
+  </script>
+</body>
+</html>

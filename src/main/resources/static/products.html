@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // PRODUCT & SERVICES MASTER</title>
+  <meta name="description" content="Municipal tariff services, EV charging energy kWh, pole ad space, and luminaire hardware products.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link active">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>PRODUCT & SERVICES MASTER CATALOG</h2>
+        <p>REVENUE SERVICES (EV CHARGING KWH & DIGITAL ADVERTISING) // PROCUREMENT GOODS (LED FIXTURES)</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-add-product')">[ + REGISTER PRODUCT ]</button>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>CONFIGURED SERVICES & INVENTORY ITEMS</h3>
+        <span class="tag-badge filled">TARIFF CATALOG</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>CODE</th>
+              <th>NAME</th>
+              <th>TYPE</th>
+              <th class="text-right">UNIT PRICE</th>
+              <th>UNIT OF MEASURE</th>
+              <th>DESCRIPTION</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="6" class="text-center font-mono">LOADING PRODUCTS...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADD PRODUCT -->
+  <div id="modal-add-product" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ REGISTER NEW PRODUCT / SERVICE ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-add-product">
+        <div class="modal-body form-grid">
+          <div class="form-group">
+            <label class="form-label" for="prod-code">PRODUCT CODE *</label>
+            <input type="text" id="prod-code" class="form-input" placeholder="e.g. SRV-POLE-WIFI" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-name">PRODUCT NAME *</label>
+            <input type="text" id="prod-name" class="form-input" placeholder="e.g. Municipal Public WiFi Pass" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-type">PRODUCT TYPE *</label>
+            <select id="prod-type" class="form-select">
+              <option value="SERVICE">SERVICE (DIGITAL / POWER / CHARGING)</option>
+              <option value="GOODS">GOODS (PHYSICAL HARDWARE / LED FIXTURE)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-price">UNIT PRICE ($) *</label>
+            <input type="number" id="prod-price" class="form-input" value="5.00" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-uom">UNIT OF MEASURE *</label>
+            <input type="text" id="prod-uom" class="form-input" placeholder="e.g. Session, kWh, Unit" required>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="prod-desc">DESCRIPTION</label>
+            <input type="text" id="prod-desc" class="form-input" placeholder="e.g. High-speed public 5G Wi-Fi hotspot access">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ SAVE PRODUCT ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initProductsPage();
+    });
+  </script>
+</body>
+</html>

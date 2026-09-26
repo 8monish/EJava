@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // BUDGET & SECTOR ANALYTICS</title>
+  <meta name="description" content="Municipal smart lighting grid operating budgets, analytic lighting sectors, and actual vs planned variance.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link active">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>LIGHTING SECTOR BUDGETS & ANALYTIC PERFORMANCE</h2>
+        <p>PLANNED OPERATING BUDGETS VS ACTUAL WHOLESALE ELECTRICITY EXPENSES & EV CHARGING REVENUE</p>
+      </div>
+      <div class="page-header-actions">
+        <span class="tag-badge filled" style="padding: 8px 14px;">SECTOR: DOWNTOWN ZONE 1 (AN-DT-Z1)</span>
+      </div>
+    </div>
+
+    <!-- Budget Summary Metrics Grid -->
+    <section class="stats-grid" aria-label="Budget Overview">
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">PLANNED REVENUE</span>
+          <span class="stat-badge">BUDGET</span>
+        </div>
+        <div class="stat-value" id="b-plan-rev">$110,000.00</div>
+        <div class="stat-subtext">PROJECTED TARIFF INFLOW</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">ACTUAL REVENUE</span>
+          <span class="stat-badge dark">REALIZED</span>
+        </div>
+        <div class="stat-value" id="b-act-rev">$84,600.00</div>
+        <div class="stat-subtext">INVOICED TO FLEETS & ADVERTISERS</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">PLANNED EXPENSE</span>
+          <span class="stat-badge">BUDGET</span>
+        </div>
+        <div class="stat-value" id="b-plan-exp">$55,000.00</div>
+        <div class="stat-subtext">PROJECTED GRID POWER & MAINTENANCE</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">ACTUAL EXPENSE</span>
+          <span class="stat-badge dark">INCURRED</span>
+        </div>
+        <div class="stat-value" id="b-act-exp">$44,200.00</div>
+        <div class="stat-subtext">WHOLESALE UTILITY POWER + LED PARTS</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">NET OPERATING MARGIN</span>
+          <span class="stat-badge dark">SURPLUS</span>
+        </div>
+        <div class="stat-value" id="b-margin">+$40,400.00</div>
+        <div class="stat-subtext">MUNICIPAL PERFORMANCE SURPLUS</div>
+      </div>
+    </section>
+
+    <!-- Budget Lines Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>DETAILED BUDGET ACCOUNT LINES & ACHIEVEMENT RATIOS</h3>
+        <span class="tag-badge filled">VARIANCE ANALYSIS</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>ACCOUNT CODE</th>
+              <th>ACCOUNT NAME</th>
+              <th>CATEGORY</th>
+              <th class="text-right">PLANNED BUDGET</th>
+              <th class="text-right">ACTUAL INCURRED</th>
+              <th class="text-right">VARIANCE ($)</th>
+              <th class="text-right">ACHIEVEMENT %</th>
+            </tr>
+          </thead>
+          <tbody id="budget-lines-tbody">
+            <tr><td colspan="7" class="text-center font-mono">LOADING BUDGET PERFORMANCE LINES...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initBudgetPage();
+    });
+  </script>
+</body>
+</html>

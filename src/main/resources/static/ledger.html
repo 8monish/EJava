@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // GENERAL LEDGER</title>
+  <meta name="description" content="Municipal double-entry general ledger and automated debits and credits journal entries.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link active">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>MUNICIPAL DOUBLE-ENTRY GENERAL LEDGER</h2>
+        <p>AUTONOMOUS JOURNAL POSTINGS // AUDIT TRAIL // BALANCED DEBITS & CREDITS</p>
+      </div>
+      <div class="page-header-actions">
+        <span class="tag-badge filled" style="padding: 8px 14px; font-size: 13px;">[ DEBITS = CREDITS BALANCED ]</span>
+      </div>
+    </div>
+
+    <!-- Journal Entries Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>SYSTEM-GENERATED DOUBLE-ENTRY JOURNAL ENTRIES</h3>
+        <span class="tag-badge filled">AUDIT TRAIL</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>ENTRY #</th>
+              <th>JOURNAL</th>
+              <th>DATE</th>
+              <th>REFERENCE</th>
+              <th>DESCRIPTION</th>
+              <th class="text-right">TOTAL DEBIT</th>
+              <th class="text-right">TOTAL CREDIT</th>
+              <th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-entries-tbody">
+            <tr><td colspan="8" class="text-center font-mono">LOADING GENERAL LEDGER ENTRIES...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Journal Types Master Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>MUNICIPAL JOURNAL TYPES CONFIGURATION</h3>
+        <span class="tag-badge filled">CONFIG</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>JOURNAL CODE</th>
+              <th>JOURNAL NAME</th>
+              <th>JOURNAL TYPE</th>
+              <th>LEDGER MAPPING</th>
+            </tr>
+          </thead>
+          <tbody id="journals-master-tbody">
+            <tr><td colspan="4" class="text-center font-mono">LOADING JOURNALS...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initLedgerPage();
+    });
+  </script>
+</body>
+</html>

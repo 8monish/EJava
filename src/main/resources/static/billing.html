@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // INVOICING & FINANCIAL TRANSACTIONS</title>
+  <meta name="description" content="Municipal smart lighting invoicing, accounts receivable, accounts payable, purchase orders, and vendor bills.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link active">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>INVOICING & FINANCIAL TRANSACTIONS</h2>
+        <p>ACCOUNTS RECEIVABLE (CUSTOMER INVOICES & ORDERS) // ACCOUNTS PAYABLE (VENDOR BILLS & POS)</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-new-po')">[ + NEW PURCHASE ORDER ]</button>
+        <button class="btn btn-secondary" onclick="openModal('modal-new-so')">[ + NEW SALES ORDER ]</button>
+      </div>
+    </div>
+
+    <!-- Segmented Sub-Navigation Tabs -->
+    <div class="subnav-tabs">
+      <button class="subnav-btn active" data-target="panel-invoices">[ 1. CUSTOMER INVOICES (AR) ]</button>
+      <button class="subnav-btn" data-target="panel-sales-orders">[ 2. SALES ORDERS ]</button>
+      <button class="subnav-btn" data-target="panel-vendor-bills">[ 3. VENDOR BILLS (AP) ]</button>
+      <button class="subnav-btn" data-target="panel-purchase-orders">[ 4. PURCHASE ORDERS ]</button>
+    </div>
+
+    <!-- PANEL 1: CUSTOMER INVOICES -->
+    <div id="panel-invoices" class="subpanel-content active">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>CUSTOMER INVOICES // ACCOUNTS RECEIVABLE LEDGER</h3>
+          <span class="tag-badge filled">REVENUE SETTLEMENT</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>INVOICE #</th>
+                <th>CUSTOMER</th>
+                <th>INVOICE DATE</th>
+                <th>DUE DATE</th>
+                <th class="text-right">TOTAL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="invoices-tbody">
+              <tr><td colspan="7" class="text-center font-mono">LOADING INVOICES...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- PANEL 2: SALES ORDERS -->
+    <div id="panel-sales-orders" class="subpanel-content">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>SALES ORDERS // FLEET CHARGING & ADVERTISING QUOTAS</h3>
+          <span class="tag-badge filled">ORDER MANAGEMENT</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>SO #</th>
+                <th>CUSTOMER</th>
+                <th>ORDER DATE</th>
+                <th class="text-right">TOTAL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="so-tbody">
+              <tr><td colspan="6" class="text-center font-mono">LOADING SALES ORDERS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- PANEL 3: VENDOR BILLS -->
+    <div id="panel-vendor-bills" class="subpanel-content">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>VENDOR BILLS // ACCOUNTS PAYABLE LEDGER</h3>
+          <span class="tag-badge filled">DISBURSEMENTS</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>BILL #</th>
+                <th>VENDOR</th>
+                <th>BILL DATE</th>
+                <th>DUE DATE</th>
+                <th class="text-right">TOTAL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="vendor-bills-tbody">
+              <tr><td colspan="7" class="text-center font-mono">LOADING VENDOR BILLS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- PANEL 4: PURCHASE ORDERS -->
+    <div id="panel-purchase-orders" class="subpanel-content">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>PURCHASE ORDERS // LED HARDWARE & INFRASTRUCTURE REPLACEMENTS</h3>
+          <span class="tag-badge filled">PROCUREMENT</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>PO #</th>
+                <th>VENDOR</th>
+                <th>ORDER DATE</th>
+                <th class="text-right">TOTAL</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="po-tbody">
+              <tr><td colspan="6" class="text-center font-mono">LOADING PURCHASE ORDERS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- MODAL: NEW PURCHASE ORDER -->
+  <div id="modal-new-po" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ CREATE PURCHASE ORDER ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-new-po">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="po-form-vendor">SELECT VENDOR *</label>
+            <select id="po-form-vendor" class="form-select" required></select>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="po-form-product">ITEM / HARDWARE *</label>
+            <select id="po-form-product" class="form-select" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="po-form-qty">QUANTITY *</label>
+            <input type="number" id="po-form-qty" class="form-input" value="10" min="1" step="1" required>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="po-form-notes">PROCUREMENT NOTES</label>
+            <input type="text" id="po-form-notes" class="form-input" placeholder="e.g. Street pole LED fixture replacement">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ CONFIRM PURCHASE ORDER ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW SALES ORDER -->
+  <div id="modal-new-so" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ CREATE SALES ORDER ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-new-so">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="so-form-customer">SELECT CUSTOMER *</label>
+            <select id="so-form-customer" class="form-select" required></select>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="so-form-product">SERVICE / QUOTA *</label>
+            <select id="so-form-product" class="form-select" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="so-form-qty">QUANTITY / KWH *</label>
+            <input type="number" id="so-form-qty" class="form-input" value="250" min="1" step="1" required>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="so-form-notes">CONTRACT NOTES</label>
+            <input type="text" id="so-form-notes" class="form-input" placeholder="e.g. Monthly commercial EV charging contract">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ CONFIRM SALES ORDER ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initBillingPage();
+    });
+  </script>
+</body>
+</html>

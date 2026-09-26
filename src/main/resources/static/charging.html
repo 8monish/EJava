@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // EV CHARGING OPERATIONS</title>
+  <meta name="description" content="Municipal streetlight pole EV charging sessions, kilowatt-hour metering, automated tariffs, and invoicing.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link active">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>EV CHARGING SESSIONS & DISPENSING OPERATIONS</h2>
+        <p>REAL-TIME POWER DISPENSING // AUTOMATED KWH TARIFF COMPUTATION // FLEET BILLING</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-start-charge')">[ + START NEW EV SESSION ]</button>
+      </div>
+    </div>
+
+    <!-- Charging Session Stats -->
+    <section class="stats-grid" aria-label="Charging Metrics">
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">ACTIVE SESSIONS</span>
+          <span class="stat-badge dark">PLUGGED IN</span>
+        </div>
+        <div class="stat-value" id="stat-active-sessions">1</div>
+        <div class="stat-subtext">VEHICLES CURRENTLY DRAWING POWER</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">TOTAL ENERGY DELIVERED</span>
+          <span class="stat-badge">METERED</span>
+        </div>
+        <div class="stat-value" id="stat-total-kwh">124.8 <span class="stat-unit">kWh</span></div>
+        <div class="stat-subtext">CUMULATIVE PUBLIC STREETLIGHT CHARGING</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-box-header">
+          <span class="stat-label">TOTAL BILLED REVENUE</span>
+          <span class="stat-badge dark">RECEIVABLES</span>
+        </div>
+        <div class="stat-value" id="stat-total-rev">$43.68</div>
+        <div class="stat-subtext">POSTED TO MUNICIPAL GENERAL LEDGER</div>
+      </div>
+    </section>
+
+    <!-- Sessions Data Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>EV CHARGING SESSION HISTORY & LIVE TELEMETRY</h3>
+        <span class="tag-badge filled">POLE METERING</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>SESSION ID</th>
+              <th>POLE UNIT</th>
+              <th>DRIVER / FLEET OPERATOR</th>
+              <th>START TIME</th>
+              <th>DURATION</th>
+              <th>KWH DELIVERED</th>
+              <th>TARIFF RATE</th>
+              <th>TOTAL CHARGES</th>
+              <th>STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="charging-sessions-tbody">
+            <tr>
+              <td colspan="10" class="text-center font-mono">LOADING CHARGING SESSIONS...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: START EV CHARGE SESSION -->
+  <div id="modal-start-charge" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ INITIATE EV CHARGING SESSION ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-start-charge">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="start-session-pole">SELECT SMART POLE UNIT *</label>
+            <select id="start-session-pole" class="form-select" required></select>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="start-session-customer">BILLING CUSTOMER (PARKING OPERATOR / DRIVER) *</label>
+            <select id="start-session-customer" class="form-select" required></select>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="start-session-fleet">VEHICLE / FLEET IDENTIFIER</label>
+            <input type="text" id="start-session-fleet" class="form-input" placeholder="e.g. Metro Delivery Fleet Van #210">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ CONNECT & START CHARGING ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: STOP EV CHARGE SESSION & BILL -->
+  <div id="modal-stop-charge" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ COMPLETE EV CHARGE SESSION & BILL ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-stop-charge">
+        <input type="hidden" id="stop-session-id">
+        <div class="modal-body">
+          <div class="stat-box" style="margin-bottom:12px;">
+            <span class="stat-label">SESSION SUMMARY</span>
+            <div id="stop-session-info" style="font-weight:800; font-size:14px; font-family:var(--font-mono); margin-top:6px;">SESSION #</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stop-kwh-input">FINAL DELIVERED ENERGY (kWh) *</label>
+            <input type="number" id="stop-kwh-input" class="form-input" value="24.5" step="0.1" required>
+          </div>
+          <div class="checkbox-wrap" style="margin-top:10px;">
+            <input type="checkbox" id="stop-autoinvoice" checked>
+            <label for="stop-autoinvoice">Auto-issue Customer Invoice & post double-entry General Ledger</label>
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ BILL CUSTOMER & COMPLETE ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initChargingPage();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // CONTACT MASTER</title>
+  <meta name="description" content="Municipal contact directory for commercial parking operators, fleet drivers, and hardware suppliers.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link active">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>CONTACT MASTER DIRECTORY</h2>
+        <p>CUSTOMERS (PARKING OPERATORS & FLEET DRIVERS) // VENDORS (LED SUPPLIERS & POWER UTILITIES)</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-add-contact')">[ + REGISTER CONTACT ]</button>
+      </div>
+    </div>
+
+    <!-- Contacts Table -->
+    <section class="brutalist-card">
+      <div class="card-header-bar">
+        <h3>REGISTERED MUNICIPAL COUNTERPARTIES</h3>
+        <span class="tag-badge filled">MASTER DATA</span>
+      </div>
+      <div class="table-scroll-wrap">
+        <table class="brutalist-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>TYPE</th>
+              <th>ROLE CATEGORY</th>
+              <th>EMAIL</th>
+              <th>PHONE</th>
+              <th class="text-right">OUTSTANDING BALANCE</th>
+            </tr>
+          </thead>
+          <tbody id="contacts-tbody">
+            <tr><td colspan="7" class="text-center font-mono">LOADING CONTACTS...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADD CONTACT -->
+  <div id="modal-add-contact" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>[ REGISTER NEW CONTACT ]</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-add-contact">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="c-name">CONTACT / COMPANY NAME *</label>
+            <input type="text" id="c-name" class="form-input" placeholder="e.g. Metro Fleet Logistics" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-type">CONTACT TYPE *</label>
+            <select id="c-type" class="form-select">
+              <option value="CUSTOMER">CUSTOMER (COMMERCIAL FLEET / DRIVER)</option>
+              <option value="VENDOR">VENDOR (HARDWARE / UTILITY SUPPLIER)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-role">ROLE CATEGORY</label>
+            <input type="text" id="c-role" class="form-input" placeholder="e.g. Commercial Fleet Operator">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-email">EMAIL ADDRESS</label>
+            <input type="email" id="c-email" class="form-input" placeholder="billing@metrofleet.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-phone">PHONE NUMBER</label>
+            <input type="text" id="c-phone" class="form-input" placeholder="+1-555-0199">
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="c-address">STREET ADDRESS</label>
+            <input type="text" id="c-address" class="form-input" placeholder="100 Commercial Plaza, Suite 400">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
+          <button type="submit" class="btn btn-primary">[ SAVE CONTACT ]</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initContactsPage();
+    });
+  </script>
+</body>
+</html>

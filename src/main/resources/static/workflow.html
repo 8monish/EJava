@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // 4-STEP MUNICIPAL WORKFLOW</title>
+  <meta name="description" content="Municipal 4-step key use-case automation runner and live API console output.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <span class="brand-badge">[ AURA // GRID ]</span>
+        <div>
+          <h1 class="brand-title">Municipal Smart Pole OS</h1>
+          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
+        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
+        <div class="actor-select-wrap">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+      </div>
+    </div>
+
+    <!-- Multi-Page Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
+        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
+        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
+        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
+        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
+        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
+        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
+        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
+        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
+        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
+        <li><a href="workflow.html" class="nav-item-link active">4-STEP WORKFLOW</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>4-STEP MUNICIPAL WORKFLOW AUTOMATION</h2>
+        <p>AUTONOMOUS VERIFICATION OF ALL KEY ARCHITECTURAL SPECIFICATIONS // REAL-TIME EXECUTION CONSOLE</p>
+      </div>
+      <div class="page-header-actions">
+        <button id="btn-run-workflow" class="btn btn-primary" style="padding: 12px 24px; font-size: 14px;">
+          [ 🚀 EXECUTE ALL 4 STEPS ]
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Step Cards -->
+    <div class="workflow-step-cards">
+      <!-- Step 1 -->
+      <div class="step-card" id="step-card-1">
+        <div class="step-card-header">
+          <span class="step-num">01</span>
+          <h4>MASTER DATA CREATION</h4>
+        </div>
+        <p class="step-desc">Add smart pole unit via <code>POST /api/smartpoles/units</code>, register fleet client & initialize Chart of Accounts.</p>
+        <div class="step-status" id="step-stat-1">STATUS: READY</div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card" id="step-card-2">
+        <div class="step-card-header">
+          <span class="step-num">02</span>
+          <h4>PROCESS EV CHARGING</h4>
+        </div>
+        <p class="step-desc">Start charging via <code>POST /api/smartpoles/charge/start</code>; meter kWh delivered and calculate automated tariff.</p>
+        <div class="step-status" id="step-stat-2">STATUS: READY</div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card" id="step-card-3">
+        <div class="step-card-header">
+          <span class="step-num">03</span>
+          <h4>INVOICING & BILLS</h4>
+        </div>
+        <p class="step-desc">Issue Customer Invoice to parking operator; process Vendor Bill for LED replacements and bank payment.</p>
+        <div class="step-status" id="step-stat-3">STATUS: READY</div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card" id="step-card-4">
+        <div class="step-card-header">
+          <span class="step-num">04</span>
+          <h4>FINANCIAL REPORTS</h4>
+        </div>
+        <p class="step-desc">Compile Smart Lighting P&L, Consolidated Balance Sheet, and Grid Budget Performance audit.</p>
+        <div class="step-status" id="step-stat-4">STATUS: READY</div>
+      </div>
+    </div>
+
+    <!-- Terminal Console Output -->
+    <section class="terminal-box">
+      <div class="terminal-header">
+        <span>CONSOLE // REAL-TIME TRANSACTION LOGS</span>
+        <span class="tag-badge" style="background:#fff; color:#000;">STDOUT / JSON</span>
+      </div>
+      <div id="terminal-output" class="terminal-output">>> READY TO EXECUTE. CLICK "[ 🚀 EXECUTE ALL 4 STEPS ]" ABOVE TO INITIATE LIVE WORKFLOW...</div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initWorkflowPage();
+    });
+  </script>
+</body>
+</html>
