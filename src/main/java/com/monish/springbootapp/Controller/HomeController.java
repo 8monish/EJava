@@ -11,53 +11,69 @@ public class HomeController {
         return "forward:/index.html";
     }
 
+    @GetMapping("/grid")
+    public String grid() {
+        return "forward:/grid.html";
+    }
+
+    @GetMapping("/finance")
+    public String finance() {
+        return "forward:/finance.html";
+    }
+
+    @GetMapping("/master")
+    public String master() {
+        return "forward:/master.html";
+    }
+
+    // Forward legacy routes to their respective nested hub panels
     @GetMapping("/poles")
     public String poles() {
-        return "forward:/poles.html";
+        return "redirect:/grid.html#poles";
     }
 
     @GetMapping("/charging")
     public String charging() {
-        return "forward:/charging.html";
-    }
-
-    @GetMapping("/billing")
-    public String billing() {
-        return "forward:/billing.html";
-    }
-
-    @GetMapping("/ledger")
-    public String ledger() {
-        return "forward:/ledger.html";
-    }
-
-    @GetMapping("/contacts")
-    public String contacts() {
-        return "forward:/contacts.html";
-    }
-
-    @GetMapping("/products")
-    public String products() {
-        return "forward:/products.html";
-    }
-
-    @GetMapping("/coa")
-    public String coa() {
-        return "forward:/coa.html";
-    }
-
-    @GetMapping("/budget")
-    public String budget() {
-        return "forward:/budget.html";
-    }
-
-    @GetMapping("/reports")
-    public String reports() {
-        return "forward:/reports.html";
+        return "redirect:/grid.html#charging";
     }
 
     @GetMapping("/workflow")
     public String workflow() {
-        return "forward:/workflow.html";
+        return "redirect:/grid.html#workflow";
+    }
+
+    @GetMapping("/billing")
+    public String billing() {
+        return "redirect:/finance.html#billing";
+    }
+
+    @GetMapping("/ledger")
+    public String ledger() {
+        return "redirect:/finance.html#ledger";
+    }
+
+    @GetMapping("/reports")
+    public String reports() {
+        return "redirect:/finance.html#reports";
+    }
+
+    @GetMapping("/contacts")
+    public String contacts() {
+        return "redirect:/master.html#contacts";
+    }
+
+    @GetMapping("/products")
+    public String products() {
+        return "redirect:/master.html#products";
+    }
+
+    @GetMapping("/coa")
+    public String coa() {
+        return "redirect:/master.html#coa";
+    }
+
+    @GetMapping("/budget")
+    public String budget() {
+        return "redirect:/master.html#budget";
     }
 }

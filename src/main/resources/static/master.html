@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // MASTER GOVERNANCE HUB</title>
+  <meta name="description" content="Municipal contact registry, tariffs and products catalog, chart of accounts, and sector budgets.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <a href="index.html" class="brand-logo-mark" aria-hidden="true" style="text-decoration:none; color:inherit;">
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </a>
+        <div class="brand-text-block">
+          <h1>AURA GRID</h1>
+          <span class="brand-subtitle">Municipal Infrastructure & Smart Pole Financial OS</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="telemetry-tag active-lime">
+          <span class="pulse-circle"></span>
+          <span id="telemetry-poles-count">5 POLES ONLINE</span>
+        </span>
+        <span class="telemetry-tag">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span id="telemetry-active-sessions">1 EV CHARGING</span>
+        </span>
+        <div class="role-select-box">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          SYNC
+        </button>
+      </div>
+    </div>
+
+    <!-- Consolidated 4-Domain Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li>
+          <a href="index.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            OVERVIEW
+          </a>
+        </li>
+        <li>
+          <a href="grid.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M8 6h8M6 10h12M4 14h16"/></svg>
+            GRID INFRASTRUCTURE
+            <span class="nav-item-badge">3 HUBS</span>
+          </a>
+        </li>
+        <li>
+          <a href="finance.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            FINANCE & LEDGER
+            <span class="nav-item-badge">3 HUBS</span>
+          </a>
+        </li>
+        <li>
+          <a href="master.html" class="nav-item-link active">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            MASTER DIRECTORY
+            <span class="nav-item-badge">4 HUBS</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Domain Hub Header -->
+    <div class="page-header" style="margin-bottom: 24px;">
+      <div class="page-header-text">
+        <h2>DOMAIN 03 // MASTER GOVERNANCE HUB</h2>
+        <p>COUNTERPARTIES // TARIFFS & ASSET CATALOG // CHART OF ACCOUNTS // SECTOR BUDGETS</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-add-contact')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          ADD CONTACT
+        </button>
+        <button class="btn btn-secondary" onclick="openModal('modal-add-product')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+          ADD PRODUCT / TARIFF
+        </button>
+      </div>
+    </div>
+
+    <!-- Nested Sub-Navigation Tabs Bar -->
+    <div class="nested-tab-bar" aria-label="Master Hub Subdomains">
+      <button class="nested-tab-btn active" data-target="nested-contacts">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        1. CONTACT REGISTRY
+      </button>
+      <button class="nested-tab-btn" data-target="nested-products">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+        2. PRODUCTS & TARIFFS
+      </button>
+      <button class="nested-tab-btn" data-target="nested-coa">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        3. CHART OF ACCOUNTS
+      </button>
+      <button class="nested-tab-btn" data-target="nested-budget">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+        4. SECTOR BUDGETS
+      </button>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 1: CONTACT REGISTRY
+         ========================================================================= -->
+    <div id="nested-contacts" class="nested-panel active">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            REGISTERED MUNICIPAL COUNTERPARTIES & CLIENTS
+          </h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-contact')">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            NEW CONTACT
+          </button>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>TYPE</th>
+                <th>ROLE CATEGORY</th>
+                <th>EMAIL</th>
+                <th>PHONE</th>
+                <th class="text-right">OUTSTANDING BALANCE</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-tbody">
+              <tr><td colspan="7" class="text-center font-mono">LOADING CONTACTS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 2: PRODUCTS & TARIFFS
+         ========================================================================= -->
+    <div id="nested-products" class="nested-panel">
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+            MUNICIPAL SERVICES, TARIFFS & HARDWARE CATALOG
+          </h3>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modal-add-product')">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            NEW PRODUCT / TARIFF
+          </button>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>CODE</th>
+                <th>NAME</th>
+                <th>TYPE</th>
+                <th class="text-right">UNIT PRICE</th>
+                <th>UNIT OF MEASURE</th>
+                <th>DESCRIPTION</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody">
+              <tr><td colspan="6" class="text-center font-mono">LOADING PRODUCTS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 3: CHART OF ACCOUNTS
+         ========================================================================= -->
+    <div id="nested-coa" class="nested-panel">
+      <!-- 4-Quadrant Visual Architecture Grid -->
+      <div class="coa-quadrant-grid">
+        <!-- 1. Assets -->
+        <section class="brutalist-card">
+          <div class="card-header-bar">
+            <h3>
+              <svg class="icon icon-sm" style="color:var(--accent-blue);" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              1. ASSETS (10000 - 19999)
+            </h3>
+            <span class="tag-badge blue">CAPITAL & LIQUID</span>
+          </div>
+          <div class="table-scroll-wrap">
+            <table class="brutalist-table">
+              <thead>
+                <tr>
+                  <th>CODE</th>
+                  <th>ACCOUNT NAME</th>
+                  <th class="text-right">CURRENT BALANCE</th>
+                </tr>
+              </thead>
+              <tbody id="coa-assets-tbody">
+                <tr><td colspan="3" class="text-center font-mono">LOADING ASSETS...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 2. Liabilities -->
+        <section class="brutalist-card">
+          <div class="card-header-bar">
+            <h3>
+              <svg class="icon icon-sm" style="color:var(--accent-orange);" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              2. LIABILITIES (20000 - 29999)
+            </h3>
+            <span class="tag-badge orange">PAYABLES & DEBT</span>
+          </div>
+          <div class="table-scroll-wrap">
+            <table class="brutalist-table">
+              <thead>
+                <tr>
+                  <th>CODE</th>
+                  <th>ACCOUNT NAME</th>
+                  <th class="text-right">CURRENT BALANCE</th>
+                </tr>
+              </thead>
+              <tbody id="coa-liabs-tbody">
+                <tr><td colspan="3" class="text-center font-mono">LOADING LIABILITIES...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 3. Income / Revenue -->
+        <section class="brutalist-card">
+          <div class="card-header-bar">
+            <h3>
+              <svg class="icon icon-sm" style="color:var(--accent-green);" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              3. INCOME / REVENUE (40000 - 49999)
+            </h3>
+            <span class="tag-badge green">TARIFF INFLOW</span>
+          </div>
+          <div class="table-scroll-wrap">
+            <table class="brutalist-table">
+              <thead>
+                <tr>
+                  <th>CODE</th>
+                  <th>ACCOUNT NAME</th>
+                  <th class="text-right">CURRENT BALANCE</th>
+                </tr>
+              </thead>
+              <tbody id="coa-revs-tbody">
+                <tr><td colspan="3" class="text-center font-mono">LOADING INCOME...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 4. Expenses -->
+        <section class="brutalist-card">
+          <div class="card-header-bar">
+            <h3>
+              <svg class="icon icon-sm" style="color:var(--accent-lime);" viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+              4. OPERATING EXPENSES (50000 - 59999)
+            </h3>
+            <span class="tag-badge lime">GRID POWER & MAINT</span>
+          </div>
+          <div class="table-scroll-wrap">
+            <table class="brutalist-table">
+              <thead>
+                <tr>
+                  <th>CODE</th>
+                  <th>ACCOUNT NAME</th>
+                  <th class="text-right">CURRENT BALANCE</th>
+                </tr>
+              </thead>
+              <tbody id="coa-exps-tbody">
+                <tr><td colspan="3" class="text-center font-mono">LOADING EXPENSES...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 4: SECTOR BUDGETS
+         ========================================================================= -->
+    <div id="nested-budget" class="nested-panel">
+      <!-- Budget Summary Metrics Grid -->
+      <section class="stats-grid" aria-label="Budget Overview" style="margin-bottom: 24px;">
+        <div class="stat-box border-blue">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">PLANNED REVENUE</div>
+            <span class="tag-badge blue">BUDGET</span>
+          </div>
+          <div class="stat-value" id="b-plan-rev">$110,000.00</div>
+          <div class="stat-subtext">PROJECTED TARIFF INFLOW</div>
+        </div>
+
+        <div class="stat-box border-green">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">ACTUAL REVENUE</div>
+            <span class="tag-badge green">REALIZED</span>
+          </div>
+          <div class="stat-value" id="b-act-rev">$84,600.00</div>
+          <div class="stat-subtext">INVOICED TO FLEETS & DRIVERS</div>
+        </div>
+
+        <div class="stat-box border-orange">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">PLANNED EXPENSE</div>
+            <span class="tag-badge orange">BUDGET</span>
+          </div>
+          <div class="stat-value" id="b-plan-exp">$55,000.00</div>
+          <div class="stat-subtext">PROJECTED GRID UTILITY POWER</div>
+        </div>
+
+        <div class="stat-box border-orange">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">ACTUAL EXPENSE</div>
+            <span class="tag-badge dark">INCURRED</span>
+          </div>
+          <div class="stat-value" id="b-act-exp">$44,200.00</div>
+          <div class="stat-subtext">WHOLESALE UTILITY + MAINTENANCE</div>
+        </div>
+
+        <div class="stat-box border-lime">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">NET MARGIN</div>
+            <span class="tag-badge lime">SURPLUS</span>
+          </div>
+          <div class="stat-value" id="b-margin">+$40,400.00</div>
+          <div class="stat-subtext">MUNICIPAL PERFORMANCE SURPLUS</div>
+        </div>
+      </section>
+
+      <!-- Sector Budget Performance Table -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+            SECTOR PERFORMANCE & BUDGET VARIANCE LINES
+          </h3>
+          <span class="tag-badge dark">DOWNTOWN / MIDTOWN / HARBOR</span>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>SECTOR / ANALYTIC ACCOUNT</th>
+                <th>BUDGET POSITION</th>
+                <th class="text-right">PLANNED AMOUNT</th>
+                <th class="text-right">PRACTICAL / ACTUAL</th>
+                <th class="text-right">VARIANCE ($)</th>
+                <th class="text-right">PERFORMANCE</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="budget-lines-tbody">
+              <tr><td colspan="7" class="text-center font-mono">LOADING SECTOR BUDGETS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       MODALS FOR MASTER HUB
+       ========================================================================= -->
+
+  <!-- MODAL: ADD CONTACT -->
+  <div id="modal-add-contact" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>REGISTER NEW CONTACT</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-add-contact">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="c-name">CONTACT / COMPANY NAME *</label>
+            <input type="text" id="c-name" class="form-input" placeholder="e.g. Metro Fleet Logistics" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-type">CONTACT TYPE *</label>
+            <select id="c-type" class="form-select">
+              <option value="CUSTOMER">CUSTOMER (COMMERCIAL FLEET / DRIVER)</option>
+              <option value="VENDOR">VENDOR (HARDWARE / UTILITY SUPPLIER)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-role">ROLE CATEGORY</label>
+            <input type="text" id="c-role" class="form-input" placeholder="e.g. Commercial Fleet Operator">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-email">EMAIL ADDRESS</label>
+            <input type="email" id="c-email" class="form-input" placeholder="billing@metrofleet.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-phone">PHONE NUMBER</label>
+            <input type="text" id="c-phone" class="form-input" placeholder="+1 (555) 019-2834">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">SAVE CONTACT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD PRODUCT -->
+  <div id="modal-add-product" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>REGISTER NEW PRODUCT / SERVICE</h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-add-product">
+        <div class="modal-body form-grid">
+          <div class="form-group">
+            <label class="form-label" for="prod-code">PRODUCT CODE *</label>
+            <input type="text" id="prod-code" class="form-input" placeholder="e.g. SRV-POLE-WIFI" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-name">PRODUCT NAME *</label>
+            <input type="text" id="prod-name" class="form-input" placeholder="e.g. Municipal Public WiFi Pass" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-type">PRODUCT TYPE *</label>
+            <select id="prod-type" class="form-select">
+              <option value="SERVICE">SERVICE (DIGITAL / POWER / CHARGING)</option>
+              <option value="GOODS">GOODS (PHYSICAL HARDWARE / LED FIXTURE)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-price">UNIT PRICE ($) *</label>
+            <input type="number" id="prod-price" class="form-input" value="5.00" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prod-uom">UNIT OF MEASURE *</label>
+            <input type="text" id="prod-uom" class="form-input" placeholder="e.g. Session, kWh, Unit" required>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="prod-desc">DESCRIPTION</label>
+            <input type="text" id="prod-desc" class="form-input" placeholder="e.g. High-speed public 5G Wi-Fi hotspot access">
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">SAVE PRODUCT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initMasterHubPage();
+    });
+  </script>
+</body>
+</html>

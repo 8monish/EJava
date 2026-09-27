@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>window.location.replace('grid.html#poles');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURA GRID // SMART POLES FLEET</title>
   <meta name="description" content="Municipal smart public light poles fleet, luminaire dimming, ambient lux simulation, and EV sockets.">
@@ -14,17 +15,25 @@
   <header class="site-header">
     <div class="header-topbar">
       <div class="brand-section">
-        <span class="brand-badge">[ AURA // GRID ]</span>
-        <div>
-          <h1 class="brand-title">Municipal Smart Pole OS</h1>
-          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        <div class="brand-logo-mark" aria-hidden="true">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="brand-text-block">
+          <h1>AURA GRID</h1>
+          <span class="brand-subtitle">Municipal Infrastructure & Smart Pole Financial OS</span>
         </div>
       </div>
 
       <div class="header-telemetry-strip">
-        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
-        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
-        <div class="actor-select-wrap">
+        <span class="telemetry-tag active-lime">
+          <span class="pulse-circle"></span>
+          <span id="telemetry-poles-count">5 POLES ONLINE</span>
+        </span>
+        <span class="telemetry-tag">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span id="telemetry-active-sessions">1 EV CHARGING</span>
+        </span>
+        <div class="role-select-box">
           <label for="global-role-select">ROLE:</label>
           <select id="global-role-select" class="select-brutalist">
             <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
@@ -32,24 +41,82 @@
             <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
           </select>
         </div>
-        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          SYNC
+        </button>
       </div>
     </div>
 
     <!-- Multi-Page Global Navigation Bar -->
     <nav class="global-nav" aria-label="Main Navigation">
       <ul class="nav-links-list">
-        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
-        <li><a href="poles.html" class="nav-item-link active">SMART POLES</a></li>
-        <li><a href="charging.html" class="nav-item-link">EV CHARGING</a></li>
-        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
-        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
-        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
-        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
-        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
-        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
-        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
-        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+        <li>
+          <a href="index.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            DASHBOARD
+          </a>
+        </li>
+        <li>
+          <a href="poles.html" class="nav-item-link active">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M8 6h8M6 10h12M4 14h16"/></svg>
+            SMART POLES
+          </a>
+        </li>
+        <li>
+          <a href="charging.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            EV CHARGING
+          </a>
+        </li>
+        <li>
+          <a href="billing.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            INVOICING
+          </a>
+        </li>
+        <li>
+          <a href="ledger.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            GENERAL LEDGER
+          </a>
+        </li>
+        <li>
+          <a href="contacts.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            CONTACTS
+          </a>
+        </li>
+        <li>
+          <a href="products.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+            PRODUCTS
+          </a>
+        </li>
+        <li>
+          <a href="coa.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            CHART OF ACCOUNTS
+          </a>
+        </li>
+        <li>
+          <a href="budget.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+            BUDGET & SECTORS
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+            FINANCIAL REPORTS
+          </a>
+        </li>
+        <li>
+          <a href="workflow.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            4-STEP WORKFLOW
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -64,35 +131,41 @@
         <p>DUAL-PURPOSE STREETLIGHT POLES // HIGH-EFFICIENCY LED LUMINAIRES, EV CHARGERS & 4K SURVEILLANCE</p>
       </div>
       <div class="page-header-actions">
-        <button class="btn btn-primary" onclick="openModal('modal-add-pole')">[ + REGISTER SMART POLE ]</button>
+        <button class="btn btn-primary" onclick="openModal('modal-add-pole')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          REGISTER SMART POLE
+        </button>
       </div>
     </div>
 
     <!-- Ambient Light & Auto-Dimming Simulator -->
     <section class="simulator-box" aria-label="Ambient Lux Simulator">
       <div class="simulator-header">
-        <h3>IOT AMBIENT SOLAR SENSOR // REAL-TIME GRID AUTO-DIMMER</h3>
-        <span class="tag-badge filled" id="lux-value-display">25 LUX</span>
+        <h3>
+          <svg class="icon icon-sm" style="color:var(--accent-orange);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+          IOT AMBIENT SOLAR SENSOR // REAL-TIME GRID AUTO-DIMMER
+        </h3>
+        <span class="tag-badge orange" id="lux-value-display">25 LUX</span>
       </div>
-      <p style="font-size:12px; font-family:var(--font-mono);">
-        The municipal system continuously monitors ambient lux and auto-adjusts luminaire brightness to optimize road safety and conserve electricity.
+      <p style="font-size:12px; font-family:var(--font-mono); color:#333;">
+        The system continuously monitors ambient solar lux and auto-adjusts luminaire output to optimize road safety and conserve electricity.
       </p>
       <div class="simulator-controls">
         <div class="slider-group">
           <input type="range" id="lux-slider" min="0" max="800" value="25" aria-label="Ambient lux slider">
         </div>
         <div class="simulator-presets">
-          <button class="btn btn-secondary btn-sm" data-preset-lux="10">[ 10 LUX // MIDNIGHT ]</button>
-          <button class="btn btn-secondary btn-sm" data-preset-lux="40">[ 40 LUX // DUSK ]</button>
-          <button class="btn btn-secondary btn-sm" data-preset-lux="250">[ 250 LUX // OVERCAST ]</button>
-          <button class="btn btn-secondary btn-sm" data-preset-lux="700">[ 700 LUX // BRIGHT DAY ]</button>
+          <button class="btn btn-secondary btn-sm" data-preset-lux="10">10 LUX // MIDNIGHT</button>
+          <button class="btn btn-secondary btn-sm" data-preset-lux="40">40 LUX // DUSK</button>
+          <button class="btn btn-secondary btn-sm" data-preset-lux="250">250 LUX // OVERCAST</button>
+          <button class="btn btn-secondary btn-sm" data-preset-lux="700">700 LUX // BRIGHT DAY</button>
         </div>
       </div>
     </section>
 
     <!-- Smart Poles Grid Cards Container -->
     <section class="poles-grid" id="poles-cards-container" aria-label="Smart Poles List">
-      <div class="card-loading font-mono">LOADING SMART POLES TELEMETRY...</div>
+      <div class="font-mono text-center" style="padding:40px;">LOADING SMART POLES TELEMETRY...</div>
     </section>
 
   </main>
@@ -101,7 +174,10 @@
   <div id="modal-add-pole" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header-bar">
-        <h3>[ REGISTER NEW SMART POLE UNIT ]</h3>
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          REGISTER NEW SMART POLE UNIT
+        </h3>
         <button class="modal-close-btn" data-close-modal>&times;</button>
       </div>
       <form id="form-add-pole">
@@ -140,8 +216,8 @@
           </div>
         </div>
         <div class="modal-footer-bar">
-          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
-          <button type="submit" class="btn btn-primary">[ REGISTER UNIT ]</button>
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">REGISTER UNIT</button>
         </div>
       </form>
     </div>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA GRID // GRID INFRASTRUCTURE HUB</title>
+  <meta name="description" content="Municipal smart public light poles fleet, EV charging sockets, and autonomous 4-step workflow automation.">
+  <link rel="stylesheet" href="index.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+
+  <!-- Top System Header -->
+  <header class="site-header">
+    <div class="header-topbar">
+      <div class="brand-section">
+        <a href="index.html" class="brand-logo-mark" aria-hidden="true" style="text-decoration:none; color:inherit;">
+          <svg class="icon icon-lg" viewBox="0 0 24 24">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </a>
+        <div class="brand-text-block">
+          <h1>AURA GRID</h1>
+          <span class="brand-subtitle">Municipal Infrastructure & Smart Pole Financial OS</span>
+        </div>
+      </div>
+
+      <div class="header-telemetry-strip">
+        <span class="telemetry-tag active-lime">
+          <span class="pulse-circle"></span>
+          <span id="telemetry-poles-count">5 POLES ONLINE</span>
+        </span>
+        <span class="telemetry-tag">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span id="telemetry-active-sessions">1 EV CHARGING</span>
+        </span>
+        <div class="role-select-box">
+          <label for="global-role-select">ROLE:</label>
+          <select id="global-role-select" class="select-brutalist">
+            <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
+            <option value="accountant">ACCOUNTANT // MUNICIPAL INVOICING</option>
+            <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
+          </select>
+        </div>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          SYNC
+        </button>
+      </div>
+    </div>
+
+    <!-- Consolidated 4-Domain Global Navigation Bar -->
+    <nav class="global-nav" aria-label="Main Navigation">
+      <ul class="nav-links-list">
+        <li>
+          <a href="index.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            OVERVIEW
+          </a>
+        </li>
+        <li>
+          <a href="grid.html" class="nav-item-link active">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M8 6h8M6 10h12M4 14h16"/></svg>
+            GRID INFRASTRUCTURE
+            <span class="nav-item-badge">3 HUBS</span>
+          </a>
+        </li>
+        <li>
+          <a href="finance.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            FINANCE & LEDGER
+            <span class="nav-item-badge">3 HUBS</span>
+          </a>
+        </li>
+        <li>
+          <a href="master.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            MASTER DIRECTORY
+            <span class="nav-item-badge">4 HUBS</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="main-wrapper">
+
+    <!-- Domain Hub Header -->
+    <div class="page-header" style="margin-bottom: 24px;">
+      <div class="page-header-text">
+        <h2>DOMAIN 01 // GRID INFRASTRUCTURE HUB</h2>
+        <p>PHYSICAL SMART POLES FLEET // EV CHARGING TERMINALS // 4-STEP WORKFLOW BENCH</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="openModal('modal-add-pole')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          REGISTER SMART POLE
+        </button>
+        <button class="btn btn-accent" onclick="openModal('modal-start-charge')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          START EV CHARGE
+        </button>
+      </div>
+    </div>
+
+    <!-- Nested Sub-Navigation Tabs Bar -->
+    <div class="nested-tab-bar" aria-label="Grid Hub Subdomains">
+      <button class="nested-tab-btn active" data-target="nested-poles">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M8 6h8M6 10h12M4 14h16"/></svg>
+        1. SMART POLES FLEET
+      </button>
+      <button class="nested-tab-btn" data-target="nested-charging">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        2. EV CHARGING BENCH
+      </button>
+      <button class="nested-tab-btn" data-target="nested-workflow">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        3. 4-STEP WORKFLOW BENCH
+      </button>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 1: SMART POLES FLEET
+         ========================================================================= -->
+    <div id="nested-poles" class="nested-panel active">
+
+      <!-- Ambient Light & Auto-Dimming Simulator -->
+      <section class="simulator-box" aria-label="Ambient Lux Simulator">
+        <div class="simulator-header">
+          <h3>
+            <svg class="icon icon-sm" style="color:var(--accent-orange);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+            IOT AMBIENT SOLAR SENSOR // REAL-TIME AUTO-DIMMER
+          </h3>
+          <span class="tag-badge orange" id="lux-value-display">25 LUX</span>
+        </div>
+        <p style="font-size:12px; font-family:var(--font-mono); color:#333;">
+          Simulate ambient solar lux conditions across city sectors. Luminaire brightness automatically adapts to preserve energy while maintaining safe lumen output.
+        </p>
+        <div class="simulator-controls">
+          <div class="slider-group">
+            <input type="range" id="lux-slider" min="0" max="800" value="25" aria-label="Ambient lux slider">
+          </div>
+          <div class="simulator-presets">
+            <button class="btn btn-secondary btn-sm" data-preset-lux="10">10 LUX // MIDNIGHT</button>
+            <button class="btn btn-secondary btn-sm" data-preset-lux="40">40 LUX // DUSK</button>
+            <button class="btn btn-secondary btn-sm" data-preset-lux="250">250 LUX // OVERCAST</button>
+            <button class="btn btn-secondary btn-sm" data-preset-lux="700">700 LUX // BRIGHT DAY</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Smart Poles Fleet Grid Container -->
+      <section class="poles-grid" id="poles-cards-container" aria-label="Smart Poles List">
+        <div class="font-mono text-center" style="padding:40px;">LOADING SMART POLES TELEMETRY...</div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 2: EV CHARGING BENCH
+         ========================================================================= -->
+    <div id="nested-charging" class="nested-panel">
+
+      <!-- Charging Session Stats -->
+      <section class="stats-grid" aria-label="Charging Metrics">
+        <div class="stat-box border-lime">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              ACTIVE SESSIONS
+            </div>
+            <span class="tag-badge lime">PLUGGED IN</span>
+          </div>
+          <div class="stat-value" id="stat-active-sessions">1</div>
+          <div class="stat-subtext">VEHICLES CURRENTLY DRAWING POWER</div>
+        </div>
+
+        <div class="stat-box border-orange">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              TOTAL ENERGY DELIVERED
+            </div>
+            <span class="tag-badge orange">METERED</span>
+          </div>
+          <div class="stat-value" id="stat-total-kwh">124.8 <span class="stat-unit">kWh</span></div>
+          <div class="stat-subtext">CUMULATIVE PUBLIC STREETLIGHT CHARGING</div>
+        </div>
+
+        <div class="stat-box border-green">
+          <div class="stat-box-header">
+            <div class="stat-label-wrap">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              TOTAL BILLED REVENUE
+            </div>
+            <span class="tag-badge green">RECEIVABLES</span>
+          </div>
+          <div class="stat-value" id="stat-total-rev">$43.68</div>
+          <div class="stat-subtext">POSTED TO MUNICIPAL GENERAL LEDGER</div>
+        </div>
+      </section>
+
+      <!-- Charging Sessions Data Table -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            ALL EV CHARGING SESSIONS & FLEET BILLING LOGS
+          </h3>
+          <button class="btn btn-accent btn-sm" onclick="openModal('modal-start-charge')">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            START SESSION
+          </button>
+        </div>
+        <div class="table-scroll-wrap">
+          <table class="brutalist-table">
+            <thead>
+              <tr>
+                <th>SESSION ID</th>
+                <th>POLE CODE & LOCATION</th>
+                <th>CUSTOMER / DRIVER</th>
+                <th>VEHICLE PLATE</th>
+                <th>START TIME</th>
+                <th class="text-right">ENERGY (kWh)</th>
+                <th class="text-right">TOTAL ($)</th>
+                <th>STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="charging-sessions-tbody">
+              <tr><td colspan="9" class="text-center font-mono">LOADING CHARGING SESSIONS...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- =========================================================================
+         NESTED PANEL 3: 4-STEP WORKFLOW BENCH
+         ========================================================================= -->
+    <div id="nested-workflow" class="nested-panel">
+
+      <!-- Workflow Runner Header -->
+      <div class="brutalist-card" style="margin-bottom: 24px; background: var(--bg-surface);">
+        <div class="card-header-bar">
+          <div>
+            <h3>
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              SPECIFICATION COMPLIANCE TEST BENCH
+            </h3>
+            <p style="font-size:12px; font-family:var(--font-mono); color:#444; margin-top:4px;">
+              Executes autonomous end-to-end integration: pole creation, charging session, customer invoicing, vendor bills, ledger posting, and sector variance reporting.
+            </p>
+          </div>
+          <button id="btn-run-workflow" class="btn btn-primary" style="padding: 12px 24px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            EXECUTE 4 STEPS
+          </button>
+        </div>
+
+        <!-- 4 Step Cards Grid -->
+        <div class="workflow-step-cards" style="padding: 20px;">
+          <!-- Step 1 -->
+          <div class="step-card" id="step-card-1">
+            <div class="step-card-header">
+              <span class="step-num">01</span>
+              <h4>MASTER DATA SETUP</h4>
+            </div>
+            <p class="step-desc">Register smart pole master unit, create parking operator contact & initialize Chart of Accounts.</p>
+            <div class="step-status" id="step-stat-1">STATUS: READY</div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card" id="step-card-2">
+            <div class="step-card-header">
+              <span class="step-num">02</span>
+              <h4>PROCESS EV CHARGING</h4>
+            </div>
+            <p class="step-desc">Initiate live charging session; record metered energy (kWh) and calculate tariff charges.</p>
+            <div class="step-status" id="step-stat-2">STATUS: READY</div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card" id="step-card-3">
+            <div class="step-card-header">
+              <span class="step-num">03</span>
+              <h4>INVOICING & BILLS</h4>
+            </div>
+            <p class="step-desc">Generate Customer Invoice for driver; register Vendor Bill for hardware & post to General Ledger.</p>
+            <div class="step-status" id="step-stat-3">STATUS: READY</div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card" id="step-card-4">
+            <div class="step-card-header">
+              <span class="step-num">04</span>
+              <h4>FINANCIAL AUDIT</h4>
+            </div>
+            <p class="step-desc">Compute Balance Sheet, Profit & Loss statement, and verify sector budget variance.</p>
+            <div class="step-status" id="step-stat-4">STATUS: READY</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Console Terminal -->
+      <section class="brutalist-card">
+        <div class="card-header-bar">
+          <h3>
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            WORKFLOW EXECUTION LOGS
+          </h3>
+          <span class="tag-badge dark">STDOUT / JSON API</span>
+        </div>
+        <div class="terminal-box" id="workflow-terminal">&gt;&gt; SYSTEM READY. CLICK "EXECUTE 4 STEPS" TO RUN SUITE...</div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- =========================================================================
+       MODALS FOR GRID HUB
+       ========================================================================= -->
+
+  <!-- MODAL: REGISTER SMART POLE -->
+  <div id="modal-add-pole" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          REGISTER NEW SMART POLE UNIT
+        </h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-add-pole">
+        <div class="modal-body form-grid">
+          <div class="form-group">
+            <label class="form-label" for="p-code">POLE CODE *</label>
+            <input type="text" id="p-code" class="form-input" placeholder="e.g. POLE-DT-004" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-name">POLE NAME *</label>
+            <input type="text" id="p-name" class="form-input" placeholder="e.g. Liberty Plaza Pole" required>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label" for="p-location">STREET LOCATION *</label>
+            <input type="text" id="p-location" class="form-input" placeholder="e.g. Broadway & 8th Avenue, Sector 1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-zone">LIGHTING SECTOR / ZONE</label>
+            <select id="p-zone" class="form-select">
+              <option value="Downtown Smart Pole Zone 1">Downtown Smart Pole Zone 1</option>
+              <option value="Midtown Business Corridor Zone 2">Midtown Business Corridor Zone 2</option>
+              <option value="Harbor Waterfront Zone 3">Harbor Waterfront Zone 3</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-power">EV CHARGER POWER (kW)</label>
+            <input type="number" id="p-power" class="form-input" value="22.0" step="0.1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-tariff">EV TARIFF ($/kWh)</label>
+            <input type="number" id="p-tariff" class="form-input" value="0.35" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="p-brightness">INITIAL LED BRIGHTNESS (%)</label>
+            <input type="number" id="p-brightness" class="form-input" value="80" min="0" max="100" required>
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">REGISTER UNIT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: START EV CHARGING -->
+  <div id="modal-start-charge" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          INITIATE EV CHARGING SESSION
+        </h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-start-charge">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="c-pole-id">SELECT SMART POLE CHARGER *</label>
+            <select id="c-pole-id" class="form-select" required>
+              <option value="">-- SELECT ONLINE POLE --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-customer-id">OPERATOR / CUSTOMER *</label>
+            <select id="c-customer-id" class="form-select" required>
+              <option value="">-- SELECT CLIENT --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-driver">DRIVER NAME</label>
+            <input type="text" id="c-driver" class="form-input" placeholder="e.g. Alex Rivera" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-vehicle">VEHICLE LICENSE / MODEL</label>
+            <input type="text" id="c-vehicle" class="form-input" placeholder="e.g. Tesla Model Y (EV-884)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="c-kwh">TARGET ENERGY DRAW (kWh)</label>
+            <input type="number" id="c-kwh" class="form-input" value="32.5" step="0.1" required>
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-accent">START CHARGING</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: STOP EV CHARGING -->
+  <div id="modal-stop-charge" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-bar">
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>
+          STOP & SETTLE EV SESSION
+        </h3>
+        <button class="modal-close-btn" data-close-modal>&times;</button>
+      </div>
+      <form id="form-stop-charge">
+        <input type="hidden" id="stop-session-id">
+        <input type="hidden" id="stop-pole-id">
+        <div class="modal-body form-grid">
+          <div class="form-group full-width">
+            <label class="form-label">VEHICLE</label>
+            <div id="stop-vehicle" class="font-mono font-bold" style="padding: 8px; border: var(--border);">--</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">DELIVERED POWER</label>
+            <div id="stop-kwh-display" class="font-mono font-bold" style="padding: 8px; border: var(--border);">0.0 kWh</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">TARIFF RATE</label>
+            <div id="stop-rate-display" class="font-mono font-bold" style="padding: 8px; border: var(--border);">$0.35/kWh</div>
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label">TOTAL AMOUNT DUE</label>
+            <div id="stop-cost-display" class="font-mono font-bold" style="padding: 10px; border: var(--border-thick); background:var(--accent-lime); font-size:1.2rem;">$0.00</div>
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">FINALIZE & POST INVOICE</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.initGridHubPage();
+    });
+  </script>
+</body>
+</html>

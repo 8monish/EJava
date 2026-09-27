@@ -1,6 +1,6 @@
 // ==========================================================================
 // AURA GRID // MUNICIPAL OS
-// NEO-BRUTALIST MULTI-PAGE APPLICATION ENGINE (PURE MONOCHROME)
+// SCALABLE APPLICATION ENGINE
 // ==========================================================================
 
 const state = {
@@ -20,12 +20,10 @@ const state = {
   activeActor: 'admin'
 };
 
-// Common DOM ready bootstrap
 document.addEventListener('DOMContentLoaded', () => {
   initCommonComponents();
 });
 
-// Common components across all pages
 function initCommonComponents() {
   initRoleSelector();
   initSyncButton();
@@ -44,7 +42,7 @@ function initRoleSelector() {
     select.addEventListener('change', (e) => {
       state.activeActor = e.target.value;
       localStorage.setItem('aura_grid_role', state.activeActor);
-      showToast('ROLE CONTEXT UPDATED: ' + e.target.options[e.target.selectedIndex].text.toUpperCase());
+      showToast('ROLE PROFILE CONTEXT: ' + e.target.options[e.target.selectedIndex].text.toUpperCase());
     });
   }
 }
@@ -53,19 +51,20 @@ function initSyncButton() {
   const btn = document.getElementById('global-sync-btn');
   if (btn) {
     btn.addEventListener('click', async () => {
-      btn.innerText = '[ SYNCING... ]';
+      btn.disabled = true;
+      btn.classList.add('loading');
       await loadGlobalTelemetry();
       if (window.onPageDataRefresh) {
         await window.onPageDataRefresh();
       }
-      btn.innerText = '[ ↻ SYNC ]';
-      showToast('TELEMETRY & LEDGERS SYNCHRONIZED');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      showToast('TELEMETRY AND LEDGERS SYNCHRONIZED');
     });
   }
 }
 
 function initModalCloseHandlers() {
-  // Closes any modal on [data-close-modal] or click on modal overlay
   document.querySelectorAll('[data-close-modal]').forEach(btn => {
     btn.addEventListener('click', () => {
       const modal = btn.closest('.modal-overlay');
@@ -92,7 +91,6 @@ function closeModal(id) {
   if (modal) modal.classList.remove('active');
 }
 
-// Global Telemetry Loader
 async function loadGlobalTelemetry() {
   try {
     const [pRes, sRes] = await Promise.all([
@@ -116,7 +114,6 @@ async function loadGlobalTelemetry() {
   }
 }
 
-// Toast System (Monochrome Brutalist)
 function showToast(message) {
   let container = document.getElementById('toast-container');
   if (!container) {
@@ -128,7 +125,10 @@ function showToast(message) {
 
   const toast = document.createElement('div');
   toast.className = 'toast';
-  toast.innerHTML = `<span style="font-weight:900;">[SYS]</span> <span>${escapeHtml(message)}</span>`;
+  toast.innerHTML = `
+    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span>${escapeHtml(message)}</span>
+  `;
   container.appendChild(toast);
 
   setTimeout(() => {
@@ -139,7 +139,6 @@ function showToast(message) {
   }, 3500);
 }
 
-// Escape HTML
 function escapeHtml(text) {
   if (text === null || text === undefined) return '';
   return String(text)
@@ -150,7 +149,6 @@ function escapeHtml(text) {
     .replace(/'/g, '&#039;');
 }
 
-// Format Currency
 function formatCurrency(val) {
   const num = Number(val) || 0;
   return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -160,7 +158,6 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Expose to window
 window.openModal = openModal;
 window.closeModal = closeModal;
 window.showToast = showToast;
@@ -169,7 +166,7 @@ window.escapeHtml = escapeHtml;
 window.state = state;
 
 // ==========================================================================
-// 1. DASHBOARD PAGE INITIALIZER (index.html)
+// 1. DASHBOARD PAGE (index.html)
 // ==========================================================================
 window.initDashboardPage = async function() {
   window.onPageDataRefresh = loadDashboardData;
@@ -189,7 +186,6 @@ async function loadDashboardData() {
     let pnl = null;
     if (repRes.ok) pnl = await repRes.json();
 
-    // Render Metrics
     const totalPolesEl = document.getElementById('dash-poles-total');
     if (totalPolesEl) totalPolesEl.innerText = state.poles.length;
 
@@ -208,28 +204,52 @@ async function loadDashboardData() {
     if (kwhEl) kwhEl.innerHTML = `${totalKwh.toFixed(1)} <span class="stat-unit">kWh</span>`;
 
     const revEl = document.getElementById('dash-ev-revenue');
-    if (revEl) revEl.innerText = formatCurrency(totalRev);
+    if (revEl) revEl.innerText = formatCurrency(totalRev) + ' BILLED TO FLEETS';
 
     const surplusEl = document.getElementById('dash-ledger-surplus');
     if (surplusEl && pnl) {
       surplusEl.innerText = `${pnl.netOperatingSurplus >= 0 ? '+' : ''}${formatCurrency(pnl.netOperatingSurplus)}`;
     }
 
-    // Recent Sessions Table Preview
+    const dashPolesTbody = document.getElementById('dash-poles-tbody');
+    if (dashPolesTbody) {
+      const topPoles = state.poles.slice(0, 5);
+      if (topPoles.length === 0) {
+        dashPolesTbody.innerHTML = '<tr><td colspan="5" class="text-center font-mono">NO POLES REGISTERED</td></tr>';
+      } else {
+        dashPolesTbody.innerHTML = topPoles.map(p => `
+          <tr>
+            <td class="font-mono"><strong>${escapeHtml(p.poleCode)}</strong></td>
+            <td>${escapeHtml(p.location || 'Sector 1')}</td>
+            <td>
+              <span class="tag-badge ${p.currentBrightness > 0 ? 'blue' : 'dark'}">
+                ${p.currentBrightness}%
+              </span>
+            </td>
+            <td class="font-mono">${p.ambientLux || 25} lx</td>
+            <td>
+              <span class="tag-badge ${p.evChargerStatus === 'AVAILABLE' ? 'lime' : (p.evChargerStatus === 'CHARGING' ? 'orange' : 'dark')}">
+                ${p.evChargerStatus}
+              </span>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
     const recentSessTbody = document.getElementById('dash-recent-sessions-tbody');
     if (recentSessTbody) {
       const recent = state.chargingSessions.slice(0, 5);
       if (recent.length === 0) {
-        recentSessTbody.innerHTML = '<tr><td colspan="6" class="text-center">NO RECENT EV CHARGING ACTIVITY</td></tr>';
+        recentSessTbody.innerHTML = '<tr><td colspan="5" class="text-center font-mono">NO RECENT EV CHARGING ACTIVITY</td></tr>';
       } else {
         recentSessTbody.innerHTML = recent.map(s => `
           <tr>
-            <td class="font-mono">#${s.id}</td>
-            <td class="font-mono">${escapeHtml(s.poleCode)}</td>
-            <td><strong>${escapeHtml(s.driverOrFleetName || 'Commercial EV')}</strong></td>
+            <td class="font-mono"><strong>${escapeHtml(s.poleCode)}</strong></td>
+            <td>${escapeHtml(s.driverOrFleetName || 'Commercial EV')}</td>
             <td class="font-mono">${(s.kwhDelivered || 0).toFixed(1)} kWh</td>
-            <td class="font-mono">${formatCurrency(s.totalAmount || 0)}</td>
-            <td><span class="tag-badge ${s.status === 'ACTIVE' ? 'filled' : ''}">${s.status}</span></td>
+            <td class="font-mono"><strong>${formatCurrency(s.totalAmount || 0)}</strong></td>
+            <td><span class="tag-badge ${s.status === 'ACTIVE' ? 'lime' : 'dark'}">${s.status}</span></td>
           </tr>
         `).join('');
       }
@@ -240,7 +260,7 @@ async function loadDashboardData() {
 }
 
 // ==========================================================================
-// 2. SMART POLES PAGE INITIALIZER (poles.html)
+// 2. SMART POLES PAGE (poles.html)
 // ==========================================================================
 window.initPolesPage = async function() {
   window.onPageDataRefresh = loadPolesData;
@@ -266,7 +286,7 @@ function renderPolesList(poles) {
   if (!container) return;
 
   if (poles.length === 0) {
-    container.innerHTML = '<div class="brutalist-card"><div class="card-body text-center">NO SMART POLE UNITS DEPLOYED. CLICK [+ REGISTER SMART POLE] TO ADD ONE.</div></div>';
+    container.innerHTML = '<div class="brutalist-card"><div class="card-body text-center font-mono">NO SMART POLE UNITS DEPLOYED. CLICK [+ REGISTER SMART POLE] TO ADD ONE.</div></div>';
     return;
   }
 
@@ -280,14 +300,20 @@ function renderPolesList(poles) {
         </div>
         <div class="pole-card-body">
           <div class="pole-meta-row">
-            <span class="pole-location">LOC: ${escapeHtml(p.location)}</span>
-            <span class="pole-zone">ZONE: ${escapeHtml(p.zone || 'DOWNTOWN SECTOR 1')}</span>
+            <span class="pole-location">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              ${escapeHtml(p.location)}
+            </span>
+            <span class="pole-zone font-mono">${escapeHtml(p.zone || 'DOWNTOWN SECTOR 1')}</span>
           </div>
 
           <!-- Luminaire Section -->
           <div class="pole-feature-section">
             <div class="feature-header">
-              <span>LED LUMINAIRE</span>
+              <span style="display:flex; align-items:center; gap:5px;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+                LED LUMINAIRE
+              </span>
               <span class="font-mono" id="bright-display-${p.poleCode}">${p.ledBrightness}% OUTPUT</span>
             </div>
             <div class="pole-slider-wrap">
@@ -304,8 +330,11 @@ function renderPolesList(poles) {
           <!-- EV Charger Section -->
           <div class="pole-feature-section">
             <div class="feature-header">
-              <span>EV CHARGER PORT</span>
-              <span class="tag-badge ${isCharging ? 'filled' : ''}">${p.chargerStatus}</span>
+              <span style="display:flex; align-items:center; gap:5px;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                EV CHARGER PORT
+              </span>
+              <span class="tag-badge ${isCharging ? 'lime' : 'blue'}">${p.chargerStatus}</span>
             </div>
             <div class="spec-list">
               <div>POWER: <strong>${p.chargerPowerKw} kW</strong></div>
@@ -318,8 +347,11 @@ function renderPolesList(poles) {
           <!-- Surveillance Camera Section -->
           <div class="pole-feature-section">
             <div class="feature-header">
-              <span>4K SURVEILLANCE</span>
-              <span class="tag-badge filled">${p.cameraStatus || 'ONLINE'}</span>
+              <span style="display:flex; align-items:center; gap:5px;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                4K SURVEILLANCE
+              </span>
+              <span class="tag-badge green">${p.cameraStatus || 'ONLINE'}</span>
             </div>
             <div style="font-size:11px; font-family:var(--font-mono);">
               STREAM: 3840x2160 @ 30 FPS • LPR ACTIVE
@@ -330,11 +362,13 @@ function renderPolesList(poles) {
         <div class="pole-card-actions">
           ${isCharging ? `
             <button class="btn btn-secondary btn-sm" style="width:100%;" onclick="openStopSessionModalForPole('${p.poleCode}', ${p.activeSessionId})">
-              [ 🛑 DISCONNECT EV & BILL ]
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6"/></svg>
+              DISCONNECT EV & BILL
             </button>
           ` : `
             <a href="charging.html" class="btn btn-primary btn-sm" style="width:100%; text-decoration:none;">
-              [ ⚡ CONNECT EV VEHICLE ]
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              CONNECT EV VEHICLE
             </a>
           `}
         </div>
@@ -438,7 +472,7 @@ function initAddPoleForm() {
 }
 
 // ==========================================================================
-// 3. CHARGING SESSIONS PAGE INITIALIZER (charging.html)
+// 3. CHARGING SESSIONS (charging.html)
 // ==========================================================================
 window.initChargingPage = async function() {
   window.onPageDataRefresh = loadChargingData;
@@ -491,7 +525,7 @@ function renderChargingSessionsTable(sessions) {
   if (!tbody) return;
 
   if (sessions.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10" class="text-center">NO CHARGING SESSIONS RECORDED YET.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" class="text-center font-mono">NO CHARGING SESSIONS RECORDED YET.</td></tr>';
     return;
   }
 
@@ -502,18 +536,19 @@ function renderChargingSessionsTable(sessions) {
     return `
       <tr>
         <td class="font-mono">#${s.id}</td>
-        <td class="font-mono">${escapeHtml(s.poleCode)}</td>
-        <td><strong>${escapeHtml(s.driverOrFleetName || s.contactName || 'Commercial Fleet EV')}</strong></td>
+        <td class="font-mono"><strong>${escapeHtml(s.poleCode)}</strong></td>
+        <td>${escapeHtml(s.driverOrFleetName || s.contactName || 'Commercial Fleet EV')}</td>
         <td class="font-mono">${startTimeFormatted}</td>
         <td class="font-mono">${s.durationMinutes || 0}m</td>
         <td class="font-mono">${(s.kwhDelivered || 0).toFixed(1)} kWh</td>
         <td class="font-mono">${formatCurrency(s.ratePerKwh || 0.35)}</td>
         <td class="font-mono"><strong>${formatCurrency(s.totalAmount || 0)}</strong></td>
-        <td><span class="tag-badge ${isActive ? 'filled' : ''}">${s.status}</span></td>
+        <td><span class="tag-badge ${isActive ? 'lime' : 'green'}">${s.status}</span></td>
         <td>
           ${isActive ? `
             <button class="btn btn-secondary btn-sm" onclick="openStopSessionModal(${s.id}, '${s.poleCode}')">
-              [ STOP & BILL ]
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6"/></svg>
+              STOP & BILL
             </button>
           ` : `
             <span class="font-mono" style="font-size:11px;">INV #${s.customerInvoiceId || 'N/A'}</span>
@@ -623,7 +658,7 @@ window.openStopSessionModalForPole = function(poleCode, sessionId) {
 };
 
 // ==========================================================================
-// 4. BILLING & TRANSACTIONS PAGE INITIALIZER (billing.html)
+// 4. BILLING & INVOICING (billing.html)
 // ==========================================================================
 window.initBillingPage = async function() {
   window.onPageDataRefresh = loadBillingData;
@@ -680,7 +715,7 @@ function renderInvoicesTable() {
   const tbody = document.getElementById('invoices-tbody');
   if (!tbody) return;
   if (state.customerInvoices.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center">NO CUSTOMER INVOICES RECORDED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center font-mono">NO CUSTOMER INVOICES RECORDED</td></tr>';
     return;
   }
   tbody.innerHTML = state.customerInvoices.map(inv => `
@@ -690,11 +725,14 @@ function renderInvoicesTable() {
       <td class="font-mono">${inv.invoiceDate || '-'}</td>
       <td class="font-mono">${inv.dueDate || '-'}</td>
       <td class="font-mono text-right"><strong>${formatCurrency(inv.totalAmount)}</strong></td>
-      <td><span class="tag-badge ${inv.status === 'PAID' ? 'filled' : ''}">${inv.status}</span></td>
+      <td><span class="tag-badge ${inv.status === 'PAID' ? 'green' : 'lime'}">${inv.status}</span></td>
       <td>
         ${inv.status !== 'PAID' ? `
-          <button class="btn btn-primary btn-sm" onclick="payCustomerInvoice(${inv.id})">[ COLLECT PAYMENT ]</button>
-        ` : `<span class="tag-badge filled">SETTLED</span>`}
+          <button class="btn btn-primary btn-sm" onclick="payCustomerInvoice(${inv.id})">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            COLLECT PAYMENT
+          </button>
+        ` : `<span class="tag-badge green">SETTLED</span>`}
       </td>
     </tr>
   `).join('');
@@ -704,7 +742,7 @@ function renderSalesOrdersTable() {
   const tbody = document.getElementById('so-tbody');
   if (!tbody) return;
   if (state.salesOrders.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center">NO SALES ORDERS RECORDED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center font-mono">NO SALES ORDERS RECORDED</td></tr>';
     return;
   }
   tbody.innerHTML = state.salesOrders.map(so => `
@@ -713,11 +751,14 @@ function renderSalesOrdersTable() {
       <td>${escapeHtml(so.customerName)}</td>
       <td class="font-mono">${so.orderDate || '-'}</td>
       <td class="font-mono text-right"><strong>${formatCurrency(so.totalAmount)}</strong></td>
-      <td><span class="tag-badge ${so.status === 'INVOICED' ? 'filled' : ''}">${so.status}</span></td>
+      <td><span class="tag-badge ${so.status === 'INVOICED' ? 'green' : 'blue'}">${so.status}</span></td>
       <td>
         ${so.status !== 'INVOICED' ? `
-          <button class="btn btn-secondary btn-sm" onclick="convertSoToInvoice(${so.id})">[ CONVERT TO INVOICE ]</button>
-        ` : `<span class="tag-badge filled">INVOICED</span>`}
+          <button class="btn btn-secondary btn-sm" onclick="convertSoToInvoice(${so.id})">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            CONVERT TO INVOICE
+          </button>
+        ` : `<span class="tag-badge green">INVOICED</span>`}
       </td>
     </tr>
   `).join('');
@@ -727,7 +768,7 @@ function renderVendorBillsTable() {
   const tbody = document.getElementById('vendor-bills-tbody');
   if (!tbody) return;
   if (state.vendorBills.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center">NO VENDOR BILLS RECORDED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center font-mono">NO VENDOR BILLS RECORDED</td></tr>';
     return;
   }
   tbody.innerHTML = state.vendorBills.map(b => `
@@ -737,11 +778,14 @@ function renderVendorBillsTable() {
       <td class="font-mono">${b.billDate || '-'}</td>
       <td class="font-mono">${b.dueDate || '-'}</td>
       <td class="font-mono text-right"><strong>${formatCurrency(b.totalAmount)}</strong></td>
-      <td><span class="tag-badge ${b.status === 'PAID' ? 'filled' : ''}">${b.status}</span></td>
+      <td><span class="tag-badge ${b.status === 'PAID' ? 'green' : 'orange'}">${b.status}</span></td>
       <td>
         ${b.status !== 'PAID' ? `
-          <button class="btn btn-primary btn-sm" onclick="payVendorBill(${b.id})">[ PAY VIA BANK ]</button>
-        ` : `<span class="tag-badge filled">DISBURSED</span>`}
+          <button class="btn btn-primary btn-sm" onclick="payVendorBill(${b.id})">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            PAY VIA BANK
+          </button>
+        ` : `<span class="tag-badge green">DISBURSED</span>`}
       </td>
     </tr>
   `).join('');
@@ -751,7 +795,7 @@ function renderPurchaseOrdersTable() {
   const tbody = document.getElementById('po-tbody');
   if (!tbody) return;
   if (state.purchaseOrders.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center">NO PURCHASE ORDERS RECORDED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center font-mono">NO PURCHASE ORDERS RECORDED</td></tr>';
     return;
   }
   tbody.innerHTML = state.purchaseOrders.map(po => `
@@ -760,18 +804,20 @@ function renderPurchaseOrdersTable() {
       <td>${escapeHtml(po.vendorName)}</td>
       <td class="font-mono">${po.orderDate || '-'}</td>
       <td class="font-mono text-right"><strong>${formatCurrency(po.totalAmount)}</strong></td>
-      <td><span class="tag-badge ${po.status === 'BILLED' ? 'filled' : ''}">${po.status}</span></td>
+      <td><span class="tag-badge ${po.status === 'BILLED' ? 'green' : 'orange'}">${po.status}</span></td>
       <td>
         ${po.status !== 'BILLED' ? `
-          <button class="btn btn-secondary btn-sm" onclick="convertPoToBill(${po.id})">[ CONVERT TO BILL ]</button>
-        ` : `<span class="tag-badge filled">BILLED</span>`}
+          <button class="btn btn-secondary btn-sm" onclick="convertPoToBill(${po.id})">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            CONVERT TO BILL
+          </button>
+        ` : `<span class="tag-badge green">BILLED</span>`}
       </td>
     </tr>
   `).join('');
 }
 
 function populateBillingModalDropdowns() {
-  // PO vendors and products
   const poVendorSelect = document.getElementById('po-form-vendor');
   if (poVendorSelect) {
     const vendors = state.contacts.filter(c => c.contactType === 'VENDOR');
@@ -783,7 +829,6 @@ function populateBillingModalDropdowns() {
     poProdSelect.innerHTML = state.products.map(p => `<option value="${p.id}" data-price="${p.unitPrice}">${p.code} - ${p.name} (${formatCurrency(p.unitPrice)})</option>`).join('');
   }
 
-  // SO customers and products
   const soCustomerSelect = document.getElementById('so-form-customer');
   if (soCustomerSelect) {
     const customers = state.contacts.filter(c => c.contactType === 'CUSTOMER');
@@ -943,7 +988,7 @@ window.payCustomerInvoice = async function(invoiceId) {
 };
 
 // ==========================================================================
-// 5. GENERAL LEDGER PAGE INITIALIZER (ledger.html)
+// 5. GENERAL LEDGER (ledger.html)
 // ==========================================================================
 window.initLedgerPage = async function() {
   window.onPageDataRefresh = loadLedgerData;
@@ -972,20 +1017,20 @@ function renderJournalEntriesTable() {
   if (!tbody) return;
 
   if (state.journalEntries.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-center">NO JOURNAL ENTRIES POSTED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="text-center font-mono">NO JOURNAL ENTRIES POSTED</td></tr>';
     return;
   }
 
   tbody.innerHTML = state.journalEntries.map(je => `
     <tr>
       <td class="font-mono"><strong>${je.entryNumber}</strong></td>
-      <td class="font-mono"><span class="tag-badge">${je.journalCode}</span></td>
+      <td class="font-mono"><span class="tag-badge dark">${je.journalCode}</span></td>
       <td class="font-mono">${je.entryDate || '-'}</td>
       <td class="font-mono">${escapeHtml(je.reference || '-')}</td>
       <td>${escapeHtml(je.description || '-')}</td>
       <td class="font-mono text-right">${formatCurrency(je.totalDebit)}</td>
       <td class="font-mono text-right">${formatCurrency(je.totalCredit)}</td>
-      <td><span class="tag-badge filled">BALANCED</span></td>
+      <td><span class="tag-badge green">BALANCED</span></td>
     </tr>
   `).join('');
 }
@@ -995,7 +1040,7 @@ function renderJournalsMasterTable() {
   if (!tbody) return;
 
   if (state.journals.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" class="text-center">NO JOURNALS CONFIGURED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center font-mono">NO JOURNALS CONFIGURED</td></tr>';
     return;
   }
 
@@ -1004,13 +1049,13 @@ function renderJournalsMasterTable() {
       <td class="font-mono"><strong>${j.code}</strong></td>
       <td><strong>${escapeHtml(j.name)}</strong></td>
       <td class="font-mono">${j.journalType}</td>
-      <td class="font-mono" style="font-size:11px;">DOUBLE-ENTRY POSTING SYSTEM</td>
+      <td class="font-mono" style="font-size:11px;">DOUBLE-ENTRY DEBIT/CREDIT POSTING</td>
     </tr>
   `).join('');
 }
 
 // ==========================================================================
-// 6. CONTACTS PAGE INITIALIZER (contacts.html)
+// 6. CONTACTS (contacts.html)
 // ==========================================================================
 window.initContactsPage = async function() {
   window.onPageDataRefresh = loadContactsData;
@@ -1035,7 +1080,7 @@ function renderContactsTable() {
   if (!tbody) return;
 
   if (state.contacts.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center">NO CONTACTS REGISTERED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center font-mono">NO CONTACTS REGISTERED</td></tr>';
     return;
   }
 
@@ -1043,7 +1088,7 @@ function renderContactsTable() {
     <tr>
       <td class="font-mono">#${c.id}</td>
       <td><strong>${escapeHtml(c.name)}</strong></td>
-      <td><span class="tag-badge ${c.contactType === 'CUSTOMER' ? 'filled' : ''}">${c.contactType}</span></td>
+      <td><span class="tag-badge ${c.contactType === 'CUSTOMER' ? 'lime' : 'orange'}">${c.contactType}</span></td>
       <td>${escapeHtml(c.roleCategory || '-')}</td>
       <td class="font-mono">${escapeHtml(c.email || '-')}</td>
       <td class="font-mono">${escapeHtml(c.phone || '-')}</td>
@@ -1090,7 +1135,7 @@ function initAddContactForm() {
 }
 
 // ==========================================================================
-// 7. PRODUCTS PAGE INITIALIZER (products.html)
+// 7. PRODUCTS (products.html)
 // ==========================================================================
 window.initProductsPage = async function() {
   window.onPageDataRefresh = loadProductsData;
@@ -1115,7 +1160,7 @@ function renderProductsTable() {
   if (!tbody) return;
 
   if (state.products.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center">NO PRODUCTS REGISTERED</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center font-mono">NO PRODUCTS REGISTERED</td></tr>';
     return;
   }
 
@@ -1123,7 +1168,7 @@ function renderProductsTable() {
     <tr>
       <td class="font-mono"><strong>${p.code}</strong></td>
       <td><strong>${escapeHtml(p.name)}</strong></td>
-      <td><span class="tag-badge ${p.productType === 'SERVICE' ? 'filled' : ''}">${p.productType}</span></td>
+      <td><span class="tag-badge ${p.productType === 'SERVICE' ? 'blue' : 'lime'}">${p.productType}</span></td>
       <td class="font-mono text-right"><strong>${formatCurrency(p.unitPrice)}</strong></td>
       <td class="font-mono">${escapeHtml(p.unitOfMeasure)}</td>
       <td>${escapeHtml(p.description || '-')}</td>
@@ -1168,7 +1213,7 @@ function initAddProductForm() {
 }
 
 // ==========================================================================
-// 8. CHART OF ACCOUNTS PAGE INITIALIZER (coa.html)
+// 8. CHART OF ACCOUNTS (coa.html)
 // ==========================================================================
 window.initCoaPage = async function() {
   window.onPageDataRefresh = loadCoaData;
@@ -1204,7 +1249,7 @@ function renderCoaAccountList(tbodyId, list) {
   if (!tbody) return;
 
   if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3" class="text-center">NO ACCOUNTS IN CATEGORY</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" class="text-center font-mono">NO ACCOUNTS IN CATEGORY</td></tr>';
     return;
   }
 
@@ -1218,7 +1263,7 @@ function renderCoaAccountList(tbodyId, list) {
 }
 
 // ==========================================================================
-// 9. BUDGET & SECTOR ANALYTICS PAGE INITIALIZER (budget.html)
+// 9. BUDGET & SECTOR ANALYTICS (budget.html)
 // ==========================================================================
 window.initBudgetPage = async function() {
   window.onPageDataRefresh = loadBudgetData;
@@ -1258,14 +1303,13 @@ function renderBudgetOverview() {
     marginEl.innerText = `${b.netActualMargin >= 0 ? '+' : ''}${formatCurrency(b.netActualMargin)}`;
   }
 
-  // Budget Lines
   const tbody = document.getElementById('budget-lines-tbody');
   if (tbody && b.lines) {
     tbody.innerHTML = b.lines.map(line => `
       <tr>
         <td class="font-mono">${line.accountCode || '-'}</td>
         <td><strong>${escapeHtml(line.accountName)}</strong></td>
-        <td><span class="tag-badge ${line.accountType === 'INCOME' ? 'filled' : ''}">${line.accountType}</span></td>
+        <td><span class="tag-badge ${line.accountType === 'INCOME' ? 'lime' : 'orange'}">${line.accountType}</span></td>
         <td class="font-mono text-right">${formatCurrency(line.plannedAmount)}</td>
         <td class="font-mono text-right"><strong>${formatCurrency(line.actualAmount)}</strong></td>
         <td class="font-mono text-right">${line.variance >= 0 ? '+' : ''}${formatCurrency(line.variance)}</td>
@@ -1276,7 +1320,7 @@ function renderBudgetOverview() {
 }
 
 // ==========================================================================
-// 10. FINANCIAL REPORTS PAGE INITIALIZER (reports.html)
+// 10. FINANCIAL REPORTS (reports.html)
 // ==========================================================================
 window.initReportsPage = async function() {
   window.onPageDataRefresh = loadReportsData;
@@ -1382,7 +1426,7 @@ function renderBudgetReportView(bud) {
       <tr>
         <td class="font-mono">${l.accountCode || '-'}</td>
         <td><strong>${escapeHtml(l.accountName)}</strong></td>
-        <td><span class="tag-badge ${l.accountType === 'INCOME' ? 'filled' : ''}">${l.accountType}</span></td>
+        <td><span class="tag-badge ${l.accountType === 'INCOME' ? 'lime' : 'orange'}">${l.accountType}</span></td>
         <td class="font-mono text-right">${formatCurrency(l.plannedAmount)}</td>
         <td class="font-mono text-right"><strong>${formatCurrency(l.actualAmount)}</strong></td>
         <td class="font-mono text-right">${l.variance >= 0 ? '+' : ''}${formatCurrency(l.variance)}</td>
@@ -1393,7 +1437,7 @@ function renderBudgetReportView(bud) {
 }
 
 // ==========================================================================
-// 11. WORKFLOW RUNNER PAGE INITIALIZER (workflow.html)
+// 11. 4-STEP WORKFLOW (workflow.html)
 // ==========================================================================
 window.initWorkflowPage = function() {
   const btn = document.getElementById('btn-run-workflow');
@@ -1402,9 +1446,11 @@ window.initWorkflowPage = function() {
   if (btn && term) {
     btn.addEventListener('click', async () => {
       btn.disabled = true;
-      btn.innerText = '[ RUNNING 4 STEPS... ]';
+      btn.innerHTML = `
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+        EXECUTING WORKFLOW...
+      `;
 
-      // Reset step cards
       for (let i = 1; i <= 4; i++) {
         const card = document.getElementById(`step-card-${i}`);
         const stat = document.getElementById(`step-stat-${i}`);
@@ -1415,7 +1461,6 @@ window.initWorkflowPage = function() {
       term.innerText = '>> [INITIATED] EXECUTING 4-STEP MUNICIPAL SPECIFICATION WORKFLOW...\n';
 
       try {
-        // Step 1 Active
         setStepState(1, 'active', 'EXECUTING: POST /api/smartpoles/units & registering clients');
         term.innerText += '>> [STEP 1] Initializing Smart Pole Master Unit & Fleet Accounts...\n';
         await sleep(600);
@@ -1423,11 +1468,9 @@ window.initWorkflowPage = function() {
         const res = await fetch('/api/demo/run-use-case', { method: 'POST' });
         const data = await res.json();
 
-        // Step 1 Done
         setStepState(1, 'done', `REGISTERED: ${data.step1_masterData.createdPoleCode}`);
         term.innerText += `>> [STEP 1 OK] Created Pole Unit ${data.step1_masterData.createdPoleCode} in ${data.step1_masterData.location}.\n`;
 
-        // Step 2 Active
         await sleep(700);
         setStepState(2, 'active', 'PROCESSING: Charging vehicle & metering kWh');
         term.innerText += '>> [STEP 2] Simulating vehicle connection, metering 24.5 kWh...\n';
@@ -1436,7 +1479,6 @@ window.initWorkflowPage = function() {
         setStepState(2, 'done', `DELIVERED: ${data.step2_chargingSession.kwhDelivered} kWh ($${data.step2_chargingSession.totalCharged})`);
         term.innerText += `>> [STEP 2 OK] Session completed. Total Billed: $${data.step2_chargingSession.totalCharged} (Customer Invoice #${data.step2_chargingSession.customerInvoiceId}).\n`;
 
-        // Step 3 Active
         await sleep(700);
         setStepState(3, 'active', 'POSTING: Vendor bill and bank payment');
         term.innerText += '>> [STEP 3] Issuing Vendor Bill for LED optics and posting Bank Disbursement...\n';
@@ -1445,7 +1487,6 @@ window.initWorkflowPage = function() {
         setStepState(3, 'done', `PAID: Bill ${data.step3_invoicing.vendorBillNumber} ($${data.step3_invoicing.vendorPaymentAmount})`);
         term.innerText += `>> [STEP 3 OK] Vendor Bill ${data.step3_invoicing.vendorBillNumber} converted & paid via Bank (${data.step3_invoicing.vendorPaymentNumber}).\n`;
 
-        // Step 4 Active
         await sleep(700);
         setStepState(4, 'active', 'GENERATING: P&L and Balance Sheet');
         term.innerText += '>> [STEP 4] Compiling Balance Sheet, P&L, and Budget Analytics...\n';
@@ -1466,7 +1507,10 @@ window.initWorkflowPage = function() {
         showToast('WORKFLOW FAILED: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = '[ 🚀 EXECUTE ALL 4 STEPS ]';
+        btn.innerHTML = `
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          EXECUTE ALL 4 STEPS
+        `;
       }
     });
   }
@@ -1478,3 +1522,96 @@ function setStepState(num, stateClass, text) {
   if (card) { card.className = `step-card ${stateClass}`; }
   if (stat) { stat.innerText = `STATUS: ${text.toUpperCase()}`; }
 }
+
+// ==========================================================================
+// 12. UNIVERSAL NESTED TABS SWITCHER (WITH HASH ROUTING)
+// ==========================================================================
+function initNestedTabBar() {
+  const tabBars = document.querySelectorAll('.nested-tab-bar');
+  tabBars.forEach(bar => {
+    const buttons = bar.querySelectorAll('.nested-tab-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        activateNestedTab(bar, targetId);
+        if (history.replaceState) {
+          const cleanHash = targetId.replace(/^nested-/, '');
+          history.replaceState(null, null, '#' + cleanHash);
+        }
+      });
+    });
+  });
+
+  // Check URL hash on page load (e.g. #charging, #workflow, #ledger, #budget, etc.)
+  if (window.location.hash) {
+    const raw = window.location.hash.substring(1).toLowerCase();
+    const btn = document.querySelector(`.nested-tab-btn[data-target="nested-${raw}"]`) ||
+                document.querySelector(`.nested-tab-btn[data-target="${raw}"]`);
+    if (btn) {
+      const bar = btn.closest('.nested-tab-bar');
+      if (bar) {
+        activateNestedTab(bar, btn.getAttribute('data-target'));
+      }
+    }
+  }
+}
+
+function activateNestedTab(bar, targetId) {
+  const buttons = bar.querySelectorAll('.nested-tab-btn');
+  buttons.forEach(b => b.classList.remove('active'));
+  const activeBtn = bar.querySelector(`.nested-tab-btn[data-target="${targetId}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const panels = document.querySelectorAll('.nested-panel');
+  panels.forEach(p => {
+    const panelId = p.id;
+    const isTargetOfThisBar = Array.from(buttons).some(b => b.getAttribute('data-target') === panelId);
+    if (isTargetOfThisBar) {
+      if (panelId === targetId) {
+        p.classList.add('active');
+      } else {
+        p.classList.remove('active');
+      }
+    }
+  });
+}
+
+// ==========================================================================
+// 13. DOMAIN HUB PAGE INITIALIZERS
+// ==========================================================================
+window.initGridHubPage = async function() {
+  initNestedTabBar();
+  initAmbientSimulator();
+  initAddPoleForm();
+  initStartChargeForm();
+  initStopChargeForm();
+  window.initWorkflowPage();
+
+  window.onPageDataRefresh = async () => {
+    await Promise.all([loadPolesData(), loadChargingData()]);
+  };
+  await Promise.all([loadPolesData(), loadChargingData()]);
+};
+
+window.initFinanceHubPage = async function() {
+  initNestedTabBar();
+  initSubnavTabs();
+  initCreatePoForm();
+  initCreateSoForm();
+
+  window.onPageDataRefresh = async () => {
+    await Promise.all([loadBillingData(), loadLedgerData(), loadReportsData()]);
+  };
+  await Promise.all([loadBillingData(), loadLedgerData(), loadReportsData()]);
+};
+
+window.initMasterHubPage = async function() {
+  initNestedTabBar();
+  initAddContactForm();
+  initAddProductForm();
+
+  window.onPageDataRefresh = async () => {
+    await Promise.all([loadContactsData(), loadProductsData(), loadCoaData(), loadBudgetData()]);
+  };
+  await Promise.all([loadContactsData(), loadProductsData(), loadCoaData(), loadBudgetData()]);
+};

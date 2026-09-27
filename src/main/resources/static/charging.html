@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>window.location.replace('grid.html#charging');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AURA GRID // EV CHARGING OPERATIONS</title>
   <meta name="description" content="Municipal streetlight pole EV charging sessions, kilowatt-hour metering, automated tariffs, and invoicing.">
@@ -14,17 +15,25 @@
   <header class="site-header">
     <div class="header-topbar">
       <div class="brand-section">
-        <span class="brand-badge">[ AURA // GRID ]</span>
-        <div>
-          <h1 class="brand-title">Municipal Smart Pole OS</h1>
-          <span class="brand-subtitle">Smart Pole Infrastructure • EV Charging • Municipal Accounting</span>
+        <div class="brand-logo-mark" aria-hidden="true">
+          <svg class="icon icon-lg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="brand-text-block">
+          <h1>AURA GRID</h1>
+          <span class="brand-subtitle">Municipal Infrastructure & Smart Pole Financial OS</span>
         </div>
       </div>
 
       <div class="header-telemetry-strip">
-        <span class="status-pill dark" id="telemetry-poles-count">5 POLES ONLINE</span>
-        <span class="status-pill" id="telemetry-active-sessions">1 EV CHARGING</span>
-        <div class="actor-select-wrap">
+        <span class="telemetry-tag active-lime">
+          <span class="pulse-circle"></span>
+          <span id="telemetry-poles-count">5 POLES ONLINE</span>
+        </span>
+        <span class="telemetry-tag">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span id="telemetry-active-sessions">1 EV CHARGING</span>
+        </span>
+        <div class="role-select-box">
           <label for="global-role-select">ROLE:</label>
           <select id="global-role-select" class="select-brutalist">
             <option value="admin">ADMIN // SMART LIGHTING MANAGER</option>
@@ -32,24 +41,82 @@
             <option value="system">SYSTEM // IOT & LEDGER ENGINE</option>
           </select>
         </div>
-        <button id="global-sync-btn" class="btn btn-secondary btn-sm">[ ↻ SYNC ]</button>
+        <button id="global-sync-btn" class="btn btn-secondary btn-sm">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          SYNC
+        </button>
       </div>
     </div>
 
     <!-- Multi-Page Global Navigation Bar -->
     <nav class="global-nav" aria-label="Main Navigation">
       <ul class="nav-links-list">
-        <li><a href="index.html" class="nav-item-link">DASHBOARD</a></li>
-        <li><a href="poles.html" class="nav-item-link">SMART POLES</a></li>
-        <li><a href="charging.html" class="nav-item-link active">EV CHARGING</a></li>
-        <li><a href="billing.html" class="nav-item-link">INVOICING</a></li>
-        <li><a href="ledger.html" class="nav-item-link">GENERAL LEDGER</a></li>
-        <li><a href="contacts.html" class="nav-item-link">CONTACTS</a></li>
-        <li><a href="products.html" class="nav-item-link">PRODUCTS</a></li>
-        <li><a href="coa.html" class="nav-item-link">CHART OF ACCOUNTS</a></li>
-        <li><a href="budget.html" class="nav-item-link">BUDGET & SECTORS</a></li>
-        <li><a href="reports.html" class="nav-item-link">FINANCIAL REPORTS</a></li>
-        <li><a href="workflow.html" class="nav-item-link">4-STEP WORKFLOW</a></li>
+        <li>
+          <a href="index.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            DASHBOARD
+          </a>
+        </li>
+        <li>
+          <a href="poles.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M8 6h8M6 10h12M4 14h16"/></svg>
+            SMART POLES
+          </a>
+        </li>
+        <li>
+          <a href="charging.html" class="nav-item-link active">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            EV CHARGING
+          </a>
+        </li>
+        <li>
+          <a href="billing.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            INVOICING
+          </a>
+        </li>
+        <li>
+          <a href="ledger.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            GENERAL LEDGER
+          </a>
+        </li>
+        <li>
+          <a href="contacts.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            CONTACTS
+          </a>
+        </li>
+        <li>
+          <a href="products.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+            PRODUCTS
+          </a>
+        </li>
+        <li>
+          <a href="coa.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            CHART OF ACCOUNTS
+          </a>
+        </li>
+        <li>
+          <a href="budget.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+            BUDGET & SECTORS
+          </a>
+        </li>
+        <li>
+          <a href="reports.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+            FINANCIAL REPORTS
+          </a>
+        </li>
+        <li>
+          <a href="workflow.html" class="nav-item-link">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            4-STEP WORKFLOW
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -64,34 +131,46 @@
         <p>REAL-TIME POWER DISPENSING // AUTOMATED KWH TARIFF COMPUTATION // FLEET BILLING</p>
       </div>
       <div class="page-header-actions">
-        <button class="btn btn-primary" onclick="openModal('modal-start-charge')">[ + START NEW EV SESSION ]</button>
+        <button class="btn btn-accent" onclick="openModal('modal-start-charge')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          START NEW EV SESSION
+        </button>
       </div>
     </div>
 
     <!-- Charging Session Stats -->
     <section class="stats-grid" aria-label="Charging Metrics">
-      <div class="stat-box">
+      <div class="stat-box border-lime">
         <div class="stat-box-header">
-          <span class="stat-label">ACTIVE SESSIONS</span>
-          <span class="stat-badge dark">PLUGGED IN</span>
+          <div class="stat-label-wrap">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            ACTIVE SESSIONS
+          </div>
+          <span class="tag-badge lime">PLUGGED IN</span>
         </div>
         <div class="stat-value" id="stat-active-sessions">1</div>
         <div class="stat-subtext">VEHICLES CURRENTLY DRAWING POWER</div>
       </div>
 
-      <div class="stat-box">
+      <div class="stat-box border-orange">
         <div class="stat-box-header">
-          <span class="stat-label">TOTAL ENERGY DELIVERED</span>
-          <span class="stat-badge">METERED</span>
+          <div class="stat-label-wrap">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            TOTAL ENERGY DELIVERED
+          </div>
+          <span class="tag-badge orange">METERED</span>
         </div>
         <div class="stat-value" id="stat-total-kwh">124.8 <span class="stat-unit">kWh</span></div>
         <div class="stat-subtext">CUMULATIVE PUBLIC STREETLIGHT CHARGING</div>
       </div>
 
-      <div class="stat-box">
+      <div class="stat-box border-green">
         <div class="stat-box-header">
-          <span class="stat-label">TOTAL BILLED REVENUE</span>
-          <span class="stat-badge dark">RECEIVABLES</span>
+          <div class="stat-label-wrap">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            TOTAL BILLED REVENUE
+          </div>
+          <span class="tag-badge green">RECEIVABLES</span>
         </div>
         <div class="stat-value" id="stat-total-rev">$43.68</div>
         <div class="stat-subtext">POSTED TO MUNICIPAL GENERAL LEDGER</div>
@@ -101,8 +180,11 @@
     <!-- Sessions Data Table -->
     <section class="brutalist-card">
       <div class="card-header-bar">
-        <h3>EV CHARGING SESSION HISTORY & LIVE TELEMETRY</h3>
-        <span class="tag-badge filled">POLE METERING</span>
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          EV CHARGING SESSION HISTORY & LIVE TELEMETRY
+        </h3>
+        <span class="tag-badge dark">POLE METERING</span>
       </div>
       <div class="table-scroll-wrap">
         <table class="brutalist-table">
@@ -135,7 +217,10 @@
   <div id="modal-start-charge" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header-bar">
-        <h3>[ INITIATE EV CHARGING SESSION ]</h3>
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          INITIATE EV CHARGING SESSION
+        </h3>
         <button class="modal-close-btn" data-close-modal>&times;</button>
       </div>
       <form id="form-start-charge">
@@ -154,8 +239,8 @@
           </div>
         </div>
         <div class="modal-footer-bar">
-          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
-          <button type="submit" class="btn btn-primary">[ CONNECT & START CHARGING ]</button>
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-accent">CONNECT & START CHARGING</button>
         </div>
       </form>
     </div>
@@ -165,7 +250,10 @@
   <div id="modal-stop-charge" class="modal-overlay">
     <div class="modal-card">
       <div class="modal-header-bar">
-        <h3>[ COMPLETE EV CHARGE SESSION & BILL ]</h3>
+        <h3>
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><rect x="9" y="9" width="6" height="6"/></svg>
+          COMPLETE EV CHARGE SESSION & BILL
+        </h3>
         <button class="modal-close-btn" data-close-modal>&times;</button>
       </div>
       <form id="form-stop-charge">
@@ -173,7 +261,7 @@
         <div class="modal-body">
           <div class="stat-box" style="margin-bottom:12px;">
             <span class="stat-label">SESSION SUMMARY</span>
-            <div id="stop-session-info" style="font-weight:800; font-size:14px; font-family:var(--font-mono); margin-top:6px;">SESSION #</div>
+            <div id="stop-session-info" style="font-weight:800; font-size:13px; font-family:var(--font-mono); margin-top:6px;">SESSION #</div>
           </div>
           <div class="form-group">
             <label class="form-label" for="stop-kwh-input">FINAL DELIVERED ENERGY (kWh) *</label>
@@ -185,8 +273,8 @@
           </div>
         </div>
         <div class="modal-footer-bar">
-          <button type="button" class="btn btn-secondary" data-close-modal>[ CANCEL ]</button>
-          <button type="submit" class="btn btn-primary">[ BILL CUSTOMER & COMPLETE ]</button>
+          <button type="button" class="btn btn-secondary" data-close-modal>CANCEL</button>
+          <button type="submit" class="btn btn-primary">BILL CUSTOMER & COMPLETE</button>
         </div>
       </form>
     </div>
